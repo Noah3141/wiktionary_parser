@@ -11,18 +11,18 @@ const HEADER_END: &'static str = "===\n";
 const HEADER_END_LEN: usize = HEADER_START.len();
 
 pub fn split_section(language_section: &str) -> Vec<(SectionHeader, &str)> {
-
     let matches = language_section.match_indices(HEADER_START);
     let mut sections: Vec<(SectionHeader, &str)> = Vec::new();
 
-    for (index, _) in matches {
-        if language_section[&index + &HEADER_START_LEN..].chars().next().expect("next") != '=' {
-            let header_onward = &language_section[index..];
-            let header = &header_onward[.. header_onward.find(HEADER_END).unwrap() + HEADER_END_LEN];
+    for (header_index, tag_start) in matches {
+        if language_section[&header_index + &HEADER_START_LEN ..].chars().next().expect("next") != '=' {
+            let header_onward = &language_section[header_index..];
+            let header = &header_onward[..header_onward.find(HEADER_END).unwrap() + HEADER_END_LEN];
             let section_header = SectionHeader::from(header);
 
-            let next = find_header_of_size(3, &language_section[index + 1..]).unwrap_or(language_section.len());
-            let section = &language_section[index..next];
+            
+            let next = find_header_of_size(3, &header_onward[1..]).unwrap_or(header_onward.len());
+            let section = &header_onward[..next];
             sections.push((section_header, section))
         } else {
             continue;

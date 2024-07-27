@@ -28,6 +28,9 @@ pub enum SectionHeader {
     Pronoun,
     Particle,
     Interjection,
+    AlternativeForms,
+    Etymology,
+    References,
 }
 
 
@@ -57,6 +60,9 @@ impl From<&str> for SectionHeader {
             "===Pronoun===" => SectionHeader::Pronoun,
             "===Particle===" => SectionHeader::Particle,
             "===Interjection===" => SectionHeader::Interjection,
+            "===Alternative forms===" => SectionHeader::AlternativeForms,
+            "===Etymology===" => SectionHeader::Etymology,
+            "===References===" => SectionHeader::References,
             unknown_header => panic!("Unimplemented header encountered! {unknown_header}")
         } 
     }

@@ -1,4 +1,5 @@
 use core::panic;
+use std::fmt::format;
 use audio::Audio;
 use belarusian::{be_adecl::BeADecl, be_adj::BeAdj, be_adv::BeAdv, be_ipa::BeIpa, be_ndecl::BeNDecl, be_noun::BeNoun, be_verb::BeVerb};
 use russian::{ru_adj::RuAdj, ru_conj::RuConj, ru_decl_adj::RuDeclAdj, ru_ipa::RuIpa, ru_noun_plus::RuNounPlus, ru_noun_table::RuNounTable, ru_verb::RuVerb};
@@ -70,13 +71,16 @@ impl WiktionaryMacro {
             for (section, section_text) in sections {
                 let section_wiki_macros = WiktionaryMacro::find_macros_in(section_text);
                 for macro_text in section_wiki_macros {
-                    wiki_macros.push(WiktionaryMacro::new(
+                    match WiktionaryMacro::new(
                         page_id, 
                         page_title.clone(), 
                         language, 
                         section, 
                         macro_text
-                    ))
+                    ) {
+                        Ok(m) => wiki_macros.push(m),
+                        Err(e) => println!("{e}"),
+                    };
                 }
             }
         }
@@ -91,12 +95,12 @@ impl WiktionaryMacro {
         language: Language, 
         section: SectionHeader,
         macro_text: String, 
-    ) -> Self {
+    ) -> Result<Self, String> {
         assert!(macro_text.starts_with("{{"));
         let mut macro_name = select_from(&macro_text, "{{", "|").expect("presence of macro start in macro_text");
         macro_name = macro_name.strip_suffix("}}").unwrap_or(macro_name);
 
-        match macro_name {
+        let new_macro = match macro_name {
             InflectionOf::TAG1 | 
             InflectionOf::TAG2 => Self::InflectionOf(InflectionOf { page_id, page_title, language, section, macro_text }),
             RelatedTerms::TAG => Self::RelatedTerms(RelatedTerms { page_id, page_title, language, section, macro_text }),
@@ -125,8 +129,10 @@ impl WiktionaryMacro {
             UkVerb::TAG => Self::UkVerb(UkVerb { page_id, page_title, language, section, macro_text }),
             UkConj::TAG => Self::UkConj(UkConj { page_id, page_title, language, section, macro_text }),
 
-            tag => panic!("Unimplemented macro name!: {tag}"),
-        }
+            tag => return Err(format!("Unimplemented macro encountered!\n{tag}")),
+        };
+
+        Ok(new_macro)
     }
 
     fn find_macros_in(text: &str) -> Vec<String> {

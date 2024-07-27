@@ -3,3 +3,7 @@ pub mod select_unto_language_header;
 pub mod select_unto_section_header;
 pub mod split_sections;
 pub mod find_header_of_size;
+pub mod is_surrounded_by_double_equals;
+pub mod is_surrounded_by_triple_equals;
+pub mod is_surrounded_by_n_equals;
+pub mod split_at_delimiters_bracketed_by_n_equals;
