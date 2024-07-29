@@ -282,6 +282,115 @@ From {{inh|bg|sla-pro|*pàlьcь}}.
 
 ";
 
+    pub const TEXT3: &'static str = "<page>
+    <title>байка</title>
+    <ns>0</ns>
+    <id>4571678</id>
+    <revision>
+      <id>79835628</id>
+      <parentid>78869316</parentid>
+      <timestamp>2024-06-02T16:50:52Z</timestamp>
+      <contributor>
+        <username>WingerBot</username>
+        <id>2024159</id>
+      </contributor>
+      <minor />
+    \0\0\0\0\0\0\0\0\0\0\0\0
+    <origin>79835628</origin>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+      <text bytes=\"2012\" sha1=\"2yljpl7jgocmqwzppsz3gev3laql0t6\" xml:space=\"preserve\">{{also|бајка}}
+==Dolgan==
+
+===Noun===
+{{head|dlg|noun|tr=bayka}}
+
+# side parts of the [[sledge]], of the [[sleigh]]
+
+==Russian==
+
+===Pronunciation===
+* {{ru-IPA|ба́йка}}
+
+===Etymology 1===
+{{root|ru|ine-pro|*bʰeh₂-|id=speak}}
+{{inh+|ru|sla-pro|*bajьka}}.
+
+====Noun====
+{{ru-noun+|ба́йка|*|adj=ба́ечный|dim=ба́ечка}}
+
+# [[fable]], [[fairy-tale]], old wives' tales
+
+=====Declension=====
+{{ru-noun-table|ба́йка|*}}
+{{ru-noun-table|ба́йка|*|old=1}}
+
+===Etymology 2===
+Per Vasmer, probably borrowed from {{bor|ru|nl|baai}}, from {{der|ru|fr|baie||[[woolen]] [[matter]]}}, from {{m|fr|bai||[[chestnut]]-[[colored]], [[bay]]}}, from {{der|ru|la|badius||[[chestnut]]-[[colored]], [[bay]]}}. First attested in 1720.
+
+====Noun====
+{{ru-noun+|ба́йка|*|n=sg|adj=ба́йковый}}
+
+# [[baize]], (thick) [[flannelette]]
+
+=====Declension=====
+{{ru-noun-table|ба́йка|*|n=sg}}
+{{ru-noun-table|ба́йка|*|n=sg|old=1}}
+
+=====Derived terms=====
+* {{l|ru|ба́йковый}}
+
+=====Descendants=====
+* {{desc|sah|баайка|bor=1}}
+
+{{topics|ru|Fabrics|Fiction}}
+
+==Ukrainian==
+
+===Pronunciation===
+* {{uk-IPA|ба́йка}}
+* {{audio|uk|Uk-байка.ogg}}
+
+===Etymology 1===
+{{root|uk|ine-pro|*bʰeh₂-|id=speak}}
+{{inh+|uk|sla-pro|*bajьka}}.
+
+====Noun====
+{{uk-noun|ба́йка&lt;*&gt;|adj=ба́єчний}}
+
+# [[fable]], [[fairy-tale]]
+
+=====Declension=====
+{{uk-ndecl|ба́йка&lt;*&gt;}}
+
+=====Derived terms=====
+{{der3|uk|
+|ба́єчник
+|байкар
+|байкарство
+|байківниця
+}}
+ 
+===Etymology 2===
+Per Vasmer, probably borrowed from {{bor|uk|nl|baai}}, from {{der|uk|fr|baie||[[woolen]] [[matter]]}}, from {{m|fr|bai||[[chestnut]]-[[colored]], [[bay]]}}, from {{der|uk|la|badius||[[chestnut]]-[[colored]], [[bay]]}}. First attested in 1720.
+
+====Noun====
+{{uk-noun|ба́йка&lt;*.sg&gt;|adj=ба́йковий}}
+
+# [[baize]]
+
+=====Declension=====
+{{uk-ndecl|ба́йка&lt;*.sg&gt;}}
+
+===References===
+* {{R:uk:Horokh}}
+
+{{c|uk|Fabrics|Fiction}}</text>
+      <sha1>2yljpl7jgocmqwzppsz3gev3laql0t6</sha1>
+    </revision>
+  </page>
+      ";
+
 }
 
 #[test]
@@ -290,7 +399,7 @@ fn general() {
     let russian = select_unto_language_header(constants::TEXT1, "==Russian==").expect("selecting unto language");
     // println!("Russian: \n\n{russian}\n\n");
     
-    let sections = split_section(russian);
+    let sections = split_sections(russian);
     
     println!("\n\nSections:\n{sections:#?}");
     
@@ -319,7 +428,7 @@ fn general() {
 #[test]
 fn final_headers_parse_correctly() {
     let russian = select_unto_language_header(constants::TEXT2, "==Russian==").expect("msg");
-    let sections = split_section(russian);
+    let sections = split_sections(russian);
 
     assert!(sections[0].0 == SectionHeader::AlternativeForms);
     assert!(sections[1].0 == SectionHeader::Etymology);
@@ -334,12 +443,19 @@ fn final_headers_parse_correctly() {
 fn headers() {
 
     let belarusian = select_unto_language_header(constants::TEXT2, "==Belarusian==").expect("splitting at belarusian");
-    let sections = split_section(belarusian);
+    let sections = split_sections(belarusian);
 
     let alternate_forms = &sections[0];
     assert_eq!(alternate_forms.0, SectionHeader::AlternativeForms);
     
     let etymology = &sections[1];
     assert_eq!(etymology.0, SectionHeader::Etymology);
+}
+
+
+#[test]
+fn anomaly_1() {
+    let ukrainian = select_unto_language_header(constants::TEXT3, "==Ukrainian==").expect("splitting!");
+    let sections = split_sections(ukrainian);
 }
 

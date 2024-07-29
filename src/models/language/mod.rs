@@ -6,3 +6,14 @@ pub enum Language {
     Ukrainian,
     Belarusian,
 }
+
+impl Language {
+    /// Converts
+    pub fn as_header(self) -> &'static str {
+        match self {
+            Language::Russian => "==Russian==",
+            Language::Ukrainian => "==Ukrainian==",
+            Language::Belarusian => "==Belarusian==",
+        }
+    }
+}

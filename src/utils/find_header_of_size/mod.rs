@@ -1,6 +1,8 @@
 #[cfg(test)]
 mod test;
 
+/// Finds the index of the first matching header of given size
+/// 
 /// `size` determines how many = together make up the header bracket
 /// Returns the index of the leading newline in `\n========Title=========`
 pub fn find_header_of_size(size: usize, text: &str) -> Option<usize> {

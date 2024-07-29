@@ -2,9 +2,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone, Copy)]
 pub enum SectionHeader {
-    Pronunciation,
-
-    //
+    
+    // Core
     Noun, // -> ====Declension====
     Verb, // -> ====Conjugation====
     Adjective,
@@ -12,32 +11,69 @@ pub enum SectionHeader {
     Adverb,
     Predicative,
     Numeral,
+    Declension, // Tier 3 ===Declension=== occurs
+    Pronunciation,
+    Pronunciation1,
+    Pronunciation2,
+    Pronunciation3,
+    Pronunciation4,
+    Pronunciation5,
+    // Almost considerable core
+    Determiner,
+    Pronoun,
+    // Potentially causing extra level-descent of core groups (really love that, great system Wiki)
+    Etymology,
+    Etymology1,
+    Etymology2,
+    Etymology3,
+    Etymology4,
+    Etymology5,
+    Etymology6,
     //
     ProperNoun,
     PrepositionalPhrase,
     Phrase,
     Proverb,
     Preposition,
+    Postposition,
+    Ambiposition,
     Idiom,
     Conjunction,
     Combining,
+    Infix,
     Suffix,
     Interfix,
     Prefix,
-    Determiner,
-    Pronoun,
     Particle,
     Interjection,
     AlternativeForms,
-    Etymology,
     References,
+    Symbol,
+    Antonyms,
+    Synonyms,
+    DiacriticalMark,
+    Letter,
+    Note,
+    CombiningForm,
+    Quotations,
+    DerivedTerms,
+    RelatedTerms,
+    SeeAlso,
+    Descendants,
+    PunctuationMark,
+    UsageNotes,
+    Scots,
+    ScotsScotsGaelic,
+    Anagrams,
+    FurtherReading,
 }
 
 
-impl From<&str> for SectionHeader {
-    fn from(value: &str) -> Self {
-        match value.trim() {
-            "===Pronunciation===" => SectionHeader::Pronunciation,
+impl TryFrom<&str> for SectionHeader {
+    type Error = String;
+    /// Attempts to convert a ===TripleEqual=== header into a specific SectionHeader
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        Ok( match value.trim() {
             "===Noun===" => SectionHeader::Noun,
             "===Verb===" => SectionHeader::Verb,
             "===Adjective===" => SectionHeader::Adjective,
@@ -45,25 +81,62 @@ impl From<&str> for SectionHeader {
             "===Adverb===" => SectionHeader::Adverb,
             "===Predicative===" => SectionHeader::Predicative,
             "===Numeral===" => SectionHeader::Numeral,
+            //
+            "===Pronunciation===" => SectionHeader::Pronunciation,
+            "===Pronunciation 1===" => SectionHeader::Pronunciation1,
+            "===Pronunciation 2===" => SectionHeader::Pronunciation2,
+            "===Pronunciation 3===" => SectionHeader::Pronunciation3,
+            "===Pronunciation 4===" => SectionHeader::Pronunciation4,
+            "===Pronunciation 5===" => SectionHeader::Pronunciation5,
+            //
+            "===Etymology===" => SectionHeader::Etymology,
+            "===Etymology 1===" => SectionHeader::Etymology1, 
+            "===Etymology 2===" => SectionHeader::Etymology2, 
+            "===Etymology 3===" => SectionHeader::Etymology3, 
+            "===Etymology 4===" => SectionHeader::Etymology4, 
+            "===Etymology 5===" => SectionHeader::Etymology5, 
+            "===Etymology 6===" => SectionHeader::Etymology6, 
+            //
             "===Proper noun===" => SectionHeader::ProperNoun,
             "===Prepositional phrase===" => SectionHeader::PrepositionalPhrase,
             "===Phrase===" => SectionHeader::Phrase,
             "===Proverb===" => SectionHeader::Proverb,
             "===Preposition===" => SectionHeader::Preposition,
+            "===Postposition===" => SectionHeader::Postposition,
+            "===Ambiposition===" => SectionHeader::Ambiposition,
             "===Idiom===" => SectionHeader::Idiom,
             "===Conjunction===" => SectionHeader::Conjunction,
             "===Combining===" => SectionHeader::Combining,
             "===Suffix===" => SectionHeader::Suffix,
+            "===Infix===" => SectionHeader::Infix, 
             "===Interfix===" => SectionHeader::Interfix,
             "===Prefix===" => SectionHeader::Prefix,
             "===Determiner===" => SectionHeader::Determiner,
             "===Pronoun===" => SectionHeader::Pronoun,
             "===Particle===" => SectionHeader::Particle,
+            "===Declension===" => SectionHeader::Declension,
             "===Interjection===" => SectionHeader::Interjection,
             "===Alternative forms===" => SectionHeader::AlternativeForms,
-            "===Etymology===" => SectionHeader::Etymology,
             "===References===" => SectionHeader::References,
-            unknown_header => panic!("Unimplemented header encountered! {unknown_header}")
-        } 
+            "===See also===" => SectionHeader::SeeAlso,
+            "===Derived terms===" => SectionHeader::DerivedTerms,
+            "===Related terms===" => SectionHeader::RelatedTerms,
+            "===Letter===" => SectionHeader::Letter, 
+            "===Symbol===" => SectionHeader::Symbol, 
+            "===Note===" => SectionHeader::Note, 
+            "===Antonyms===" => SectionHeader::Antonyms, 
+            "===Synonyms===" => SectionHeader::Synonyms, 
+            "===Quotations===" => SectionHeader::Quotations, 
+            "===Diacritical mark===" => SectionHeader::DiacriticalMark, 
+            "===Punctuation mark===" => SectionHeader::PunctuationMark, 
+            "===Scots===" => SectionHeader::Scots, 
+            "===Descendants===" => SectionHeader::Descendants, 
+            "===Combining form===" => SectionHeader::CombiningForm, 
+            "===Further reading===" => SectionHeader::FurtherReading, 
+            "===Usage notes===" => SectionHeader::UsageNotes, 
+            "===Anagrams===" => SectionHeader::Anagrams, 
+            "===Scots/Scottish Gaelic===" => SectionHeader::ScotsScotsGaelic, 
+            unknown_header => return Err(format!("Unimplemented header encountered! {unknown_header}"))
+        })
     }
 }

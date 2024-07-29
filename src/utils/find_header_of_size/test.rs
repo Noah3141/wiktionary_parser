@@ -29,3 +29,26 @@ asdasd
 
 
 }
+
+#[test]
+fn complex_byte_boundaries() {
+    let text = "===Etymology 1===
+{{root|uk|ine-pro|*bʰeh₂-|id=speak}}
+{{inh+|uk|sla-pro|*bajьka}}.
+
+====Noun====
+{{uk-noun|ба́йка&lt;*&gt;|adj=ба́єчний}}
+
+# [[fable]], [[fairy-tale]]
+
+=====Declension=====
+{{uk-ndecl|ба́йка&lt;*&gt;}}
+
+=====Derive====";
+
+    assert!(
+        text[
+            find_header_of_size(4, text).unwrap()..
+        ].starts_with("\n====Noun")
+    )
+}

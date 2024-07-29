@@ -1,11 +1,17 @@
-use core::panic;
-use std::fmt::format;
-use audio::Audio;
-use belarusian::{be_adecl::BeADecl, be_adj::BeAdj, be_adv::BeAdv, be_ipa::BeIpa, be_ndecl::BeNDecl, be_noun::BeNoun, be_verb::BeVerb};
-use russian::{ru_adj::RuAdj, ru_conj::RuConj, ru_decl_adj::RuDeclAdj, ru_ipa::RuIpa, ru_noun_plus::RuNounPlus, ru_noun_table::RuNounTable, ru_verb::RuVerb};
 use serde::{Deserialize, Serialize};
-use ukrainian::{uk_adecl::UkADecl, uk_adj::UkAdj, uk_conj::UkConj, uk_ipa::UkIpa, uk_ndecl::UkNDecl, uk_noun::UkNoun, uk_verb::UkVerb};
-use crate::utils::{select_from::select_from, select_unto_language_header::select_unto_language_header, select_unto_section_header::select_unto_section_header, split_sections::split_section};
+use affix::Affix;
+use label::Label;
+use reference::Reference;
+use audio::Audio;
+use head::Head;
+use synonyms::Synonyms;
+use inflection_of::InflectionOf;
+use related_terms::RelatedTerms;
+use participle_of::ParticipleOf;
+use belarusian::*;
+use russian::*;
+use ukrainian::*;
+use crate::utils::{select_from, select_unto_language_header, split_sections};
 use super::{language::Language, section_header::SectionHeader};
 
 pub mod inflection_of;
@@ -13,21 +19,27 @@ pub mod related_terms;
 pub mod head;
 pub mod affix;
 pub mod audio;
+pub mod label;
+pub mod synonyms;
+pub mod reference;
+pub mod participle_of;
 
 pub mod russian;
 pub mod belarusian;
 pub mod ukrainian;
 
-use inflection_of::InflectionOf;
-use head::Head;
-use related_terms::RelatedTerms;
 
 #[derive(Serialize, Deserialize)]
 pub enum WiktionaryMacro {
     InflectionOf(InflectionOf),
+    Label(Label),
     RelatedTerms(RelatedTerms),
     Head(Head),
+    ParticipleOf(ParticipleOf),
     Audio(Audio),
+    Affix(Affix),
+    Synonyms(Synonyms),
+    Reference(Reference),
     // Belarusian
     BeADecl(BeADecl),
     BeAdj(BeAdj),
@@ -39,8 +51,10 @@ pub enum WiktionaryMacro {
     // Russian
     RuAdj(RuAdj),
     RuConj(RuConj),
+    RuAdv(RuAdv),
     RuDeclAdj(RuDeclAdj),
     RuIpa(RuIpa),
+    RuNounOld(RuNounOld),
     RuNounPlus(RuNounPlus),
     RuNounTable(RuNounTable),
     RuVerb(RuVerb),
@@ -56,35 +70,41 @@ pub enum WiktionaryMacro {
 
 
 impl WiktionaryMacro {
-    /// Take in <page> </page>
-    pub fn parse_from_xml(page_xml: &str) -> Vec<Self> {
+    /// Takes in <page></page> as `page_xml`
+    /// `language` determines which language header to process in the provided text. Others are ignored.
+    pub fn parse_from_xml(page_xml: &str, language: &Language) -> Result<Vec<Self>, String> {
         let mut wiki_macros: Vec<Self> = Vec::with_capacity(30_000);
         let page_id = u64::from_str_radix(
             select_from(page_xml, "<id>", "</id>").expect("presence of page id"),
             10
         ).expect("radix");
         let page_title = select_from(page_xml, "<title>", "</title>").expect("page title").to_string();
-        if page_xml.contains("==Russian==") {
-            let language_section = select_unto_language_header(page_xml, "==Russian==").expect("successful language section extraction");
-            let language = Language::Russian;
-            let sections = split_section(language_section);
+        if  page_title.starts_with("Wiktionary:") || 
+            page_title.starts_with("User:") ||
+            page_title.starts_with("Module:") ||
+            page_title.starts_with("Template:") ||
+            page_title.starts_with("Appendix:")
+            { return Err("This page is not a contentful page, and likely has headers beyond the usual".to_string()) }
+        if page_xml.contains(language.as_header()) {
+            let language_section = select_unto_language_header(page_xml, language.as_header()).expect("successful language section extraction");
+            let sections = split_sections(language_section);
             for (section, section_text) in sections {
                 let section_wiki_macros = WiktionaryMacro::find_macros_in(section_text);
                 for macro_text in section_wiki_macros {
                     match WiktionaryMacro::new(
                         page_id, 
                         page_title.clone(), 
-                        language, 
+                        *language, 
                         section, 
                         macro_text
                     ) {
                         Ok(m) => wiki_macros.push(m),
-                        Err(e) => println!("{e}"),
+                        Err(e) => println!("\n{page_id} - {e}\n"),
                     };
                 }
             }
         }
-        wiki_macros
+        Ok(wiki_macros)
     }
 
 
@@ -96,15 +116,24 @@ impl WiktionaryMacro {
         section: SectionHeader,
         macro_text: String, 
     ) -> Result<Self, String> {
-        assert!(macro_text.starts_with("{{"));
+        if !macro_text.starts_with("{{") { return Err(format!("Expected the provided macro_text to start with brackets!, received: {macro_text:#?}"))}
+
         let mut macro_name = select_from(&macro_text, "{{", "|").expect("presence of macro start in macro_text");
         macro_name = macro_name.strip_suffix("}}").unwrap_or(macro_name);
+
+        if macro_name.starts_with(Reference::TAG_INITIAL) {
+            return Ok(Self::Reference(Reference { page_id, page_title, language, section, macro_text }))
+        }
 
         let new_macro = match macro_name {
             InflectionOf::TAG1 | 
             InflectionOf::TAG2 => Self::InflectionOf(InflectionOf { page_id, page_title, language, section, macro_text }),
             RelatedTerms::TAG => Self::RelatedTerms(RelatedTerms { page_id, page_title, language, section, macro_text }),
             Head::TAG => Self::Head(Head { page_id, page_title, language, section, macro_text }),
+            Audio::TAG => Self::Audio(Audio { page_id, page_title, language, section, macro_text }),
+            Affix::TAG => Self::Affix(Affix { page_id, page_title, language, section, macro_text }),
+            Label::TAG => Self::Label(Label { page_id, page_title, language, section, macro_text }),
+            ParticipleOf::TAG => Self::ParticipleOf(ParticipleOf  { page_id, page_title, language, section, macro_text }),
             // Belarusian
             BeADecl::TAG => Self::BeADecl(BeADecl { page_id, page_title, language, section, macro_text }),
             BeAdj::TAG => Self::BeAdj(BeAdj { page_id, page_title, language, section, macro_text }),
@@ -120,6 +149,9 @@ impl WiktionaryMacro {
             RuIpa::TAG => Self::RuIpa(RuIpa { page_id, page_title, language, section, macro_text }),
             RuNounPlus::TAG => Self::RuNounPlus(RuNounPlus { page_id, page_title, language, section, macro_text }),
             RuVerb::TAG => Self::RuVerb(RuVerb { page_id, page_title, language, section, macro_text }),
+            RuAdv::TAG => Self::RuAdv(RuAdv { page_id, page_title, language, section, macro_text }),
+            RuNounOld::TAG => Self::RuNounOld(RuNounOld { page_id, page_title, language, section, macro_text }),
+            RuNounTable::TAG => Self::RuNounTable(RuNounTable { page_id, page_title, language, section, macro_text }),
             // Ukrainian
             UkADecl::TAG => Self::UkADecl(UkADecl { page_id, page_title, language, section, macro_text }),
             UkAdj::TAG => Self::UkAdj(UkAdj { page_id, page_title, language, section, macro_text }),
@@ -129,12 +161,14 @@ impl WiktionaryMacro {
             UkVerb::TAG => Self::UkVerb(UkVerb { page_id, page_title, language, section, macro_text }),
             UkConj::TAG => Self::UkConj(UkConj { page_id, page_title, language, section, macro_text }),
 
-            tag => return Err(format!("Unimplemented macro encountered!\n{tag}")),
+            "rfap" => return Err(format!("`rfap` macro has no significance")),
+            tag => return Err(format!("Unimplemented macro encountered!\n{tag:#?}")),
         };
 
         Ok(new_macro)
     }
 
+    /// Takes a block of text and detects any contained `{{macros}}`, returning the text (with surrounding brackets) of each macro in a Vec
     fn find_macros_in(text: &str) -> Vec<String> {
         let mut macros = Vec::new();
         let mut stack = Vec::new();
