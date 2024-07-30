@@ -1,3 +1,4 @@
+use reqwest::Request;
 use serde::{Deserialize, Serialize};
 use affix::Affix;
 use label::Label;
@@ -11,7 +12,7 @@ use participle_of::ParticipleOf;
 use belarusian::*;
 use russian::*;
 use ukrainian::*;
-use crate::utils::{select_from, select_unto_language_header, split_sections};
+use crate::{constants, utils::{select_from, select_unto_language_header, split_sections}};
 use super::{language::Language, section_header::SectionHeader};
 
 pub mod inflection_of;
@@ -29,7 +30,7 @@ pub mod belarusian;
 pub mod ukrainian;
 
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum WiktionaryMacro {
     InflectionOf(InflectionOf),
     Label(Label),
@@ -42,6 +43,7 @@ pub enum WiktionaryMacro {
     Reference(Reference),
     // Belarusian
     BeADecl(BeADecl),
+    BeConj(BeConj),
     BeAdj(BeAdj),
     BeAdv(BeAdv),
     BeIpa(BeIpa),
@@ -142,6 +144,7 @@ impl WiktionaryMacro {
             BeNDecl::TAG => Self::BeNDecl(BeNDecl { page_id, page_title, language, section, macro_text }),
             BeNoun::TAG => Self::BeNoun(BeNoun { page_id, page_title, language, section, macro_text }),
             BeVerb::TAG => Self::BeVerb(BeVerb { page_id, page_title, language, section, macro_text }),
+            BeConj::TAG => Self::BeConj(BeConj { page_id, page_title, language, section, macro_text }),
             // Russian
             RuAdj::TAG => Self::RuAdj(RuAdj { page_id, page_title, language, section, macro_text }),
             RuConj::TAG => Self::RuConj(RuConj { page_id, page_title, language, section, macro_text }),
@@ -202,4 +205,52 @@ impl WiktionaryMacro {
         macros
     }
 
+}
+
+
+
+pub trait Expand {
+    fn page_title(&self) -> &str;
+    fn macro_text(&self) -> &str;
+
+    async fn html(&self, client: &reqwest::Client) -> scraper::Html {
+        let res = self.expand_with(&client).await;
+        let fragment = scraper::Html::parse_fragment(&res);
+        fragment
+    }
+
+    async fn expand(&self) -> String {
+        let client = reqwest::Client::new();
+        self.expand_with(&client).await
+    }
+
+    async fn expand_with(&self, client: &reqwest::Client) -> String {
+        let macro_text =  &self.macro_text()
+            .replace("&lt;", "<")
+            .replace("&gt;", ">");
+        let res = client.get(constants::wiki_api::BASE_URL)
+            .query(&[
+                ("action", "parse"),
+                ("format", "json"),
+                ("prop", "text|title"),
+                ("title", &self.page_title()),
+                ("text", macro_text),
+            ])
+            .send()
+            .await
+            .expect("successful res");
+        
+        // Parse the response body as JSON
+        let json: serde_json::Value = res.json().await.expect("Failed to parse JSON response");
+
+        let html = json
+            .get("parse").unwrap()
+            .get("text").unwrap()
+            .get("*").unwrap()
+            .to_string()
+            .replace(r#"\""#, r#"""#)
+            .replace(r#"\n"#, "\n");
+
+        html_escape::decode_html_entities(&html).to_string()
+    }
 }

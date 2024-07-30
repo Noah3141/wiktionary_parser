@@ -5,7 +5,7 @@ use crate::models::language::Language;
 ///
 /// # Russian Verb
 /// ## The main macro for a Russian verb
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct RuVerb {
     pub page_id: u64,
     pub page_title: String,

@@ -14,6 +14,10 @@ pub struct BeNoun {
     pub macro_text: String,
 }
 
+pub mod lemma;
+pub mod entry;
+pub mod expand;
+
 impl BeNoun {
     pub const TAG: &'static str = "be-noun";
 }

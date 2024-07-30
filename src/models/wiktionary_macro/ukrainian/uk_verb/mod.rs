@@ -6,7 +6,7 @@ use crate::models::language::Language;
 /// # Ukrainian Verb 
 /// ## 
 /// 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct UkVerb {
     pub page_id: u64,
     pub page_title: String,

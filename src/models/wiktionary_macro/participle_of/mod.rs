@@ -17,6 +17,8 @@ pub struct ParticipleOf {
     pub macro_text: String,
 }
 
+pub mod lemma;
+
 impl ParticipleOf {
     pub const TAG: &'static str = "participle of";
 }
