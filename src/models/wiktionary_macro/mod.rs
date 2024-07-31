@@ -213,17 +213,21 @@ pub trait Expand {
     fn page_title(&self) -> &str;
     fn macro_text(&self) -> &str;
 
+    /// Use client to `.expand_with()` and return the HTML of the API's response
     async fn html(&self, client: &reqwest::Client) -> scraper::Html {
         let res = self.expand_with(&client).await;
         let fragment = scraper::Html::parse_fragment(&res);
         fragment
     }
 
+    /// See `.expand_with`, except this launches a new client inefficiently.
     async fn expand(&self) -> String {
         let client = reqwest::Client::new();
         self.expand_with(&client).await
     }
 
+    /// Sends request to Wiktionary.org API to expand the self's macro_text template. Performs simple reversal of HTML escaping (otherwise the Lua on the other side crashes)
+    /// API requests require the macro to be expanded in a context of the model/page that the macro was on, so this function pairs with .page_title()
     async fn expand_with(&self, client: &reqwest::Client) -> String {
         let macro_text =  &self.macro_text()
             .replace("&lt;", "<")

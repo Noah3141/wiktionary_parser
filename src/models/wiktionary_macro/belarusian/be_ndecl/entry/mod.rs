@@ -15,19 +15,6 @@ impl BeNDecl {
         Some(text)
     }
 
-    pub fn is_perfective(html: &scraper::Html) -> bool {
-        let selector = Selector::parse(".NavHead").unwrap();
-        let first_match = html.select(&selector).next().expect("a first element selected by classname");
-        let inner_text = first_match.text().collect::<Vec<&str>>().join(" ");
-        let text = inner_text.to_string();
-        text.contains("perfective")
-    }
-    pub fn is_imperfective(html: &scraper::Html) -> bool {
-        let selector = Selector::parse(".NavHead").unwrap();
-        let first_match = html.select(&selector).next().expect("a first element selected by classname");
-        let inner_text = first_match.text().collect::<Vec<&str>>().join(" ");
-        let text = inner_text.to_string();
-        text.contains("imperfective")
-    }
+
 
 }

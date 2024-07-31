@@ -24,9 +24,9 @@ impl BeNDecl {
 
 /// CSS selectors for forms
 pub mod class_selectors {
-    pub const ALL: [&str; 12] = [PREP_S,PREP_P,INSTR_S,INSTR_P,ACC_S,ACC_P,DAT_S,DAT_P,GEN_S,GEN_P,NOM_S,NOM_P];
-    pub const PREP_S: &'static str = ".pre\\|s-form-of";
-    pub const PREP_P: &'static str = ".pre\\|p-form-of";
+    pub const ALL: [&str; 12] = [LOC_S,LOC_P,INSTR_S,INSTR_P,ACC_S,ACC_P,DAT_S,DAT_P,GEN_S,GEN_P,NOM_S,NOM_P];
+    pub const LOC_S: &'static str = ".loc\\|s-form-of";
+    pub const LOC_P: &'static str = ".loc\\|p-form-of";
     pub const INSTR_S: &'static str = ".ins\\|s-form-of";
     pub const INSTR_P: &'static str = ".ins\\|p-form-of";
     pub const ACC_S: &'static str = ".acc\\|s-form-of";
@@ -37,4 +37,6 @@ pub mod class_selectors {
     pub const GEN_P: &'static str = ".gen\\|p-form-of";
     pub const NOM_S: &'static str = ".nom\\|s-form-of";
     pub const NOM_P: &'static str = ".nom\\|p-form-of";
+    pub const VOC_S: &'static str = ".voc\\|s-form-of";
+
 }

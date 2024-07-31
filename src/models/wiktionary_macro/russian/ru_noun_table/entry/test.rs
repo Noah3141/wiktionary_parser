@@ -1,5 +1,5 @@
 
-use crate::models::wiktionary_macro::ru_noun_table::class_selectors;
+use super::super::class_selectors;
 use crate::models::wiktionary_macro::{Expand, RuNounTable};
 use crate::models::language::Language::Russian;
 use crate::models::section_header::SectionHeader::*;
