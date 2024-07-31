@@ -65,4 +65,9 @@ pub mod class_selectors {
     
 }
 
+impl RuDeclAdj {
+    pub fn is_old(&self) -> bool {
+        self.macro_text.contains("|old=1")
+    }
+}
 

@@ -1,6 +1,6 @@
 use scraper::{Html, Selector};
 use super::RuDeclAdj;
-use crate::models::wiktionary_macro::Expand;
+use crate::{models::wiktionary_macro::Expand, utils::select_from};
 
 #[cfg(test)]
 mod test;
@@ -20,7 +20,24 @@ impl RuDeclAdj {
         let tag_is_expected = parts[0] == "ru-decl-adj" ;
         if !tag_is_expected { println!("\n\nUnexpected tag! {parts:#?}\n\n"); }
 
-        parts[1]
+        match parts.get(1) {
+            Some(segment) => {
+                if *segment == "" { return &self.page_title }
+
+                if *segment == "-" && without_brackets.contains("manual") {
+                    if let Some(lemma) = select_from(without_brackets, "nom_mp=", "|") {
+                        return lemma
+                    };
+                    if let Some(lemma) = select_from(without_brackets, "nom_m=", "|") {
+                        return lemma
+                    };
+                    panic!("Couldn't figure out this manual template: {{{without_brackets}}}")
+                }
+
+                return segment
+            },
+            None => &self.page_title,
+        }
     }
     pub async fn form_and_lemma(&self, client: &reqwest::Client) -> Vec<(String, &str)> {
 

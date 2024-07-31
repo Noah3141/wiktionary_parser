@@ -21,7 +21,8 @@ impl RuConj {
         let first_match = html.select(&selector).next().expect("a first element selected by classname");
         let inner_text = first_match.text().collect::<Vec<&str>>().join(" ");
         let text = inner_text.to_string();
-        text.contains("perfective")
+        let is_perfective  =  text.contains(" perfective");
+        is_perfective
     }
     pub fn is_imperfective(html: &scraper::Html,) -> bool {
         let selector = Selector::parse(".NavHead").unwrap();
@@ -31,4 +32,11 @@ impl RuConj {
         text.contains("imperfective")
     }
 
+    pub fn is_transitive(html: &scraper::Html) -> bool {
+        let selector = Selector::parse(".NavHead").unwrap();
+        let first_match = html.select(&selector).next().expect("a first element selected by classname");
+        let inner_text = first_match.text().collect::<Vec<&str>>().join(" ");
+        let text = inner_text.to_string();
+        text.contains(" transitive")
+    }
 }

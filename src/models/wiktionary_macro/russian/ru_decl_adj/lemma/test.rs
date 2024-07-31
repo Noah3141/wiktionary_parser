@@ -1,4 +1,3 @@
-use rubit_api_db::dictionary_info::russian::RussianAdjective;
 
 use crate::models::section_header::SectionHeader;
 use super::RuDeclAdj;
@@ -70,4 +69,44 @@ fn extracting_lemma3() {
     };
     let accented_form = adj.lemma();
     assert_eq!(accented_form, "большо\u{301}й");
+}
+
+#[test]
+fn варёный() {
+    let adj = RuDeclAdj {
+        page_id: 7512,
+        page_title: "варёный".to_string(),
+        language: crate::models::language::Language::Russian,
+        section: SectionHeader::Adjective,
+        macro_text: "{{ru-decl-adj|}}".to_string(),
+    };
+    let accented_form = adj.lemma();
+    assert_eq!(accented_form, "варёный");
+}
+
+#[test]
+fn вооружённый() {
+    let adj = RuDeclAdj {
+        page_id: 7512,
+        page_title: "вооружённый".to_string(),
+        language: crate::models::language::Language::Russian,
+        section: SectionHeader::Adjective,
+        macro_text: "{{ru-decl-adj||a(1)}}".to_string(),
+    };
+    let accented_form = adj.lemma();
+    assert_eq!(accented_form, "вооружённый");
+}
+
+#[test]
+fn ordinal() {
+    let adj = RuDeclAdj {
+        page_id: 000,
+        page_title: "девяносто два".to_string(),
+        language: crate::models::language::Language::Russian,
+        section: SectionHeader::Adjective,
+        macro_text: "{{ru-decl-adj|-|manual|nom_mp=девяно́сто два́|nom_fp=девяно́сто две́|gen_p=девяно́ста дву́х|dat_p=девяно́ста дву́м|ins_p=девяно́ста двумя́|pre_p=девяно́ста дву́х|special=cdva}}".to_string(),
+    };
+
+    let accented_form = adj.lemma();
+    assert_eq!(accented_form, "девяно\u{301}сто два\u{301}");
 }

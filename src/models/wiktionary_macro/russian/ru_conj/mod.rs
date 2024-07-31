@@ -54,7 +54,7 @@ pub mod class_selectors {
     pub const ВЫ_IMPERATIVE: &'static str = ".\\32\\|p\\|imp-form-of";
     //
     pub const MASC_PAST: &'static str = ".m\\|s\\|past\\|ind-form-of";
-    pub const PLUR_PAST: &'static str = ".p\\|s\\|past\\|ind-form-of";
+    pub const PLUR_PAST: &'static str = ".p\\|past\\|ind-form-of"; 
     pub const FEM_PAST: &'static str = ".f\\|s\\|past\\|ind-form-of";
     pub const NEUT_PAST: &'static str = ".n\\|s\\|past\\|ind-form-of";
 }
