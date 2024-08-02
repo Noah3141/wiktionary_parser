@@ -16,13 +16,13 @@ impl RuConj {
     }
 
     pub fn is_perfective(&self, html: &scraper::Html,) -> bool {
-        self.check_head(html, " perfective")
+        self.check_head(html, " perfective").expect("check_head for is_perfective")
     }
     pub fn is_imperfective(&self, html: &scraper::Html,) -> bool {
-        self.check_head(html, "imperfective")
+        self.check_head(html, "imperfective").expect("check_head for is_imperfective")
     }
     
     pub fn is_transitive(&self, html: &scraper::Html) -> bool {
-        self.check_head(html, " transitive")
+        self.check_head(html, " transitive").expect("check_head for is_transitive")
     }
 }

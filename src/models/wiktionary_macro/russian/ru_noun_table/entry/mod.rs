@@ -10,8 +10,8 @@ impl RuNounTable {
 
     /// `form` needs to provide a wiktionary_macro::russian::ru_noun_table::class_labels
     pub fn get_form(&self, html: &scraper::Html, mut form_selector: &str) -> Option<String> {
-        let singulare_tantum = self.check_head(html, "sg-only") | self.macro_text.contains("|n=s");
-        let plurale_tantum = self.check_head(html, "pl-only") | self.macro_text.contains("|n=p");
+        let singulare_tantum = self.check_head(html, "sg-only").expect("check_head for sg-only") | self.macro_text.contains("|n=s");
+        let plurale_tantum = self.check_head(html, "pl-only").expect("check_head for pl-only") | self.macro_text.contains("|n=p");
 
         if super::class_selectors::PLURAL.contains(&form_selector) && singulare_tantum {
             return None
@@ -83,9 +83,9 @@ impl RuNounTable {
     }
 
     pub fn gender(&self, html: &scraper::Html) -> Gender {
-        if let true = self.check_head(&html, "masc-form") { return Gender::Masculine };
-        if let true = self.check_head(&html, "fem-form") { return Gender::Feminine };
-        if let true = self.check_head(&html, "neut-form") { return Gender::Neuter };
+        if let true = self.check_head(&html, "masc-form").expect("check_head for masc-form") { return Gender::Masculine };
+        if let true = self.check_head(&html, "fem-form").expect("check_head for fem-form") { return Gender::Feminine };
+        if let true = self.check_head(&html, "neut-form").expect("check_head for neut-form") { return Gender::Neuter };
         panic!("Should not occur! Couldn't determine gender from NavHead!")
     }
 }
