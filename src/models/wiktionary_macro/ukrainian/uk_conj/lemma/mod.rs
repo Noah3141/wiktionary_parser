@@ -13,11 +13,14 @@ impl UkConj {
             .expect("Starting brackets")
             .strip_suffix("}}")
             .expect("ending brackets");
-        let parts: Vec<&str> = without_brackets.split("|").collect();
-        let tag_is_expected = parts[0] == "ru-conj" ;
-        if !tag_is_expected { println!("\n\nUnexpected tag! {parts:#?}\n\n"); }
-
-        parts[3].trim()
+        let tag_is_expected = without_brackets.starts_with("uk-conj") ;
+        if !tag_is_expected { println!("\n\nUnexpected tag! {{{without_brackets}}}\n\n"); }
+        let after_name = without_brackets.strip_prefix("uk-conj|").expect("prefix presence");
+        let lemma = match after_name.find("&lt;") {
+            Some(lt) => &after_name[..lt],
+            None => after_name,
+        };
+        lemma
     }
 
     pub async fn form_and_lemma(&self, client: &reqwest::Client) -> Vec<(String, &str)> {

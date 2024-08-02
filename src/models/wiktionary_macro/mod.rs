@@ -81,11 +81,11 @@ impl WiktionaryMacro {
     /// Takes in <page></page> as `page_xml`
     /// `language` determines which language header to process in the provided text. Others are ignored.
     pub fn parse_from_xml(page_xml: &str, language: &Language) -> Result<Vec<Self>, String> {
-        let mut wiki_macros: Vec<Self> = Vec::with_capacity(30_000);
+        let mut wiki_macros: Vec<Self> = Vec::with_capacity(50);
         let page_id = u64::from_str_radix(
             select_from(page_xml, "<id>", "</id>").expect("presence of page id"),
             10
-        ).expect("radix");
+        ).expect("conversion to int");
         let page_title = select_from(page_xml, "<title>", "</title>").expect("page title").to_string();
         if  page_title.starts_with("Wiktionary:") || 
             page_title.starts_with("User:") ||
@@ -181,8 +181,8 @@ impl WiktionaryMacro {
 
     /// Takes a block of text and detects any contained `{{macros}}`, returning the text (with surrounding brackets) of each macro in a Vec
     fn find_macros_in(text: &str) -> Vec<String> {
-        let mut macros = Vec::new();
-        let mut stack = Vec::new();
+        let mut macros: Vec<String> = Vec::new();
+        let mut stack: Vec<usize> = Vec::new();
         let mut macro_start: Option<usize> = None;
         let mut chars = text.chars().enumerate();
 

@@ -391,6 +391,59 @@ Per Vasmer, probably borrowed from {{bor|uk|nl|baai}}, from {{der|uk|fr|baie||[[
   </page>
       ";
 
+    pub const TEXT4: &'static str = "
+==Russian==
+{{wikipedia|lang=ru}}
+
+===Alternative forms===
+* {{alter|ru|Испа́нія||ru-PRO}}
+* {{alter|ru|Гишпа́ния|q=dated}}
+* {{alter|ru|Гишпа́нія|q=dated||ru-PRO}}
+
+===Pronunciation===
+* {{IPA|ru|[ɪˈspanʲɪjɐ]}}
+* {{audio|ru|Ru-Испания.ogg}}
+* {{rhymes|ru|anʲɪja|s=4}}
+
+===Proper noun===
+{{ru-proper noun+|Испа́ния|adj=испа́нский}}
+
+# {{tcl|ru|Spain|id=Q29}}
+
+====Declension====
+{{ru-noun-table|Испа́ния|n=sg}}
+
+====Related terms====
+* {{l|ru|испа́нец}}, {{l|ru|испа́нка}}
+* {{l|ru|испа́нский}}
+
+====Descendants====
+* {{desc|hy|Իսպանիա|bor=1}}
+
+===See also===
+* {{list:countries of Europe/ru}}
+
+{{cln|ru|exonyms}}</text>
+      <sha1>3b2ox12x2eroqett7eu3vvkasidgo27</sha1>
+    </revision>
+  </page>";
+
+}
+
+#[test]
+fn finds_sections_in_special_err() {
+    let sections = split_sections(constants::TEXT4);
+
+    assert_eq!( sections[0].0 , SectionHeader::AlternativeForms );
+    assert_eq!( sections[1].0 , SectionHeader::Pronunciation );
+    assert_eq!( sections[2].0 , SectionHeader::ProperNoun );
+    assert_eq!( sections[3].0 , SectionHeader::SeeAlso );
+    
+    assert_eq!( sections[1].1.trim(),
+"===Pronunciation===
+* {{IPA|ru|[ɪˈspanʲɪjɐ]}}
+* {{audio|ru|Ru-Испания.ogg}}
+* {{rhymes|ru|anʲɪja|s=4}}" );
 }
 
 #[test]

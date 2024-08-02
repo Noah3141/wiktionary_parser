@@ -33,7 +33,7 @@ impl BeConj {
         let html = Html::parse_fragment(&res);
 
         for form in super::class_selectors::ALL {
-            let try_to_get = BeConj::get_form(&html, form);
+            let try_to_get = self.get_form(&html, form);
             if let Some(form) = try_to_get {
                 form_lemma_tuples.push(
                     (form, self.lemma())

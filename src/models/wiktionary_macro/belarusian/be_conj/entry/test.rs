@@ -56,7 +56,7 @@ async fn yoink_particular_forms() {
     let html = table.html(&client).await;
     println!("{}", html.html());
 
-    let neut_past  = BeConj::get_form(&html, &class_selectors::NEUT_PAST).expect("presence of form");
+    let neut_past  = table.get_form(&html, &class_selectors::NEUT_PAST).expect("presence of form");
 
     assert_eq!(neut_past, String::from("спрача\u{301}лася")) // sic, Belarusian spelling lol
 }
@@ -76,23 +76,23 @@ async fn nonpresent_forms_dont_break() {
     let html = table.html(&client).await;
     
     assert_eq!(
-        BeConj::get_form(&html, &class_selectors::PAST_ACTIVE_PARTICIPLE),
+        table.get_form(&html, &class_selectors::PAST_ACTIVE_PARTICIPLE),
         None
     );
     assert_eq!(
-        BeConj::get_form(&html, &class_selectors::PRESENT_PASSIVE_PARTICIPLE),
+        table.get_form(&html, &class_selectors::PRESENT_PASSIVE_PARTICIPLE),
         None
     );
     assert_eq!(
-        BeConj::get_form(&html, &class_selectors::Я_PRESENT_INDICATIVE).unwrap(),
+        table.get_form(&html, &class_selectors::Я_PRESENT_INDICATIVE).unwrap(),
         "пішу́"
     );
     assert_eq!(
-        BeConj::get_form(&html, &class_selectors::МЫ_PRESENT_INDICATIVE).unwrap(),
+        table.get_form(&html, &class_selectors::МЫ_PRESENT_INDICATIVE).unwrap(),
         "пі́шам"
     );
     assert_eq!(
-        BeConj::get_form(&html, &class_selectors::ОНИ_PRESENT_INDICATIVE).unwrap(),
+        table.get_form(&html, &class_selectors::ЯНЫ_PRESENT_INDICATIVE).unwrap(),
         "пі́шуць"
     );
 }

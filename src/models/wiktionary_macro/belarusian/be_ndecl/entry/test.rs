@@ -19,9 +19,9 @@ async fn yoink_particular_forms() {
     let html = table.html(&client).await;
     println!("{}", html.html());
 
-    let gen_pl  = BeNDecl::get_form(&html, &class_selectors::GEN_P).expect("gen p");
+    let gen_pl  = table.get_form(&html, &class_selectors::GEN_P).expect("gen p");
     assert_eq!(gen_pl, "брато\u{301}ў");
 
-    let gen_pl  = BeNDecl::get_form(&html, &class_selectors::DAT_P).expect("dat p");
+    let gen_pl  = table.get_form(&html, &class_selectors::DAT_P).expect("dat p");
     assert_eq!(gen_pl, "брата\u{301}м");
 }

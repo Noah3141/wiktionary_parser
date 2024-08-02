@@ -10,6 +10,7 @@ const HEADER_START_LEN: usize = HEADER_START.len();
 const HEADER_END: &'static str = "===\n";
 const HEADER_END_LEN: usize = HEADER_START.len();
 
+/// Finds all 3 equals sign headers within a language section (from ==Lang== to the next ==Lang== or end)
 pub fn split_sections(language_section: &str) -> Vec<(SectionHeader, &str)> {
     let matches = language_section.match_indices(HEADER_START);
     let mut sections: Vec<(SectionHeader, &str)> = Vec::new();

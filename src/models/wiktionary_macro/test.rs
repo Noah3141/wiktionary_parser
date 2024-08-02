@@ -1,6 +1,6 @@
 use core::panic;
 
-use crate::models::{language::Language, section_header::SectionHeader, wiktionary_macro::RuIpa};
+use crate::models::{language::Language, section_header::SectionHeader, wiktionary_macro::{ipa::Ipa, RuIpa}};
 
 use super::WiktionaryMacro;
 
@@ -92,14 +92,20 @@ fn catches_ipa() {
   </page>";
 
     let macros = WiktionaryMacro::parse_from_xml(page, &Language::Russian).expect("its right there");
-
     println!("{:#?}", macros);
 
-    let ipa_macro = match &macros[0] { WiktionaryMacro::RuIpa(m) => m, _ => panic!("No RU IPA found!") };
+// "===Pronunciation===
+// * {{IPA|ru|[ɪˈspanʲɪjɐ]}}
+// * {{audio|ru|Ru-Испания.ogg}}
+// * {{rhymes|ru|anʲɪja|s=4}}"
 
+    let mut found: Option<Ipa> = None;
+    for wiki_macro in macros {
+        if let WiktionaryMacro::Ipa(m) = wiki_macro { found = Some(m) }
+    }
+        
     assert!(
-        ipa_macro.macro_text == "{{IPA|ru|[ɪˈspanʲɪjɐ]}}".to_string()
+        found.unwrap().macro_text == "{{IPA|ru|[ɪˈspanʲɪjɐ]}}".to_string()
     )
-  
 
 }
