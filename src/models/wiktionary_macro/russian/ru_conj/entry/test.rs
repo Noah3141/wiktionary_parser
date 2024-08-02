@@ -139,7 +139,7 @@ async fn yoink_particular_forms() {
     let html = table.html(&client).await;
     println!("{}", html.html());
 
-    let neut_past  = RuConj::get_form(&html, &class_selectors::NEUT_PAST).expect("presence of form");
+    let neut_past  = table.get_form(&html, &class_selectors::NEUT_PAST).expect("presence of form");
 
     assert_eq!(neut_past, String::from("бы\u{301}ло"))
 }
@@ -159,27 +159,27 @@ async fn nonpresent_forms_dont_break() {
     let html = table.html(&client).await;
     
     assert_eq!(
-        RuConj::get_form(&html, &class_selectors::ОН_PRESENT_INDICATIVE),
+        table.get_form(&html, &class_selectors::ОН_PRESENT_INDICATIVE),
         None
     );
     assert_eq!(
-        RuConj::get_form(&html, &class_selectors::МЫ_PRESENT_INDICATIVE),
+        table.get_form(&html, &class_selectors::МЫ_PRESENT_INDICATIVE),
         None
     );
     assert_eq!(
-        RuConj::get_form(&html, &class_selectors::ОНИ_PRESENT_INDICATIVE),
+        table.get_form(&html, &class_selectors::ОНИ_PRESENT_INDICATIVE),
         None
     );
     assert_eq!(
-        RuConj::get_form(&html, &class_selectors::Я_FUTURE_INDICATIVE).unwrap(),
+        table.get_form(&html, &class_selectors::Я_FUTURE_INDICATIVE).unwrap(),
         "возьму\u{301}"
     );
     assert_eq!(
-        RuConj::get_form(&html, &class_selectors::МЫ_FUTURE_INDICATIVE).unwrap(),
+        table.get_form(&html, &class_selectors::МЫ_FUTURE_INDICATIVE).unwrap(),
         "возьмём"
     );
     assert_eq!(
-        RuConj::get_form(&html, &class_selectors::ОНИ_FUTURE_INDICATIVE).unwrap(),
+        table.get_form(&html, &class_selectors::ОНИ_FUTURE_INDICATIVE).unwrap(),
         "возьму\u{301}т"
     );
 }
@@ -197,5 +197,5 @@ async fn perfectivity_detects() {
     let client = reqwest::Client::new();
     let html = table.html(&client).await;
 
-    assert!(RuConj::is_perfective(&html));
+    assert!(table.is_perfective(&html));
 }

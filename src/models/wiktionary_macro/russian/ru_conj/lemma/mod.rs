@@ -21,7 +21,7 @@ impl RuConj {
         let tag_is_expected = parts[0] == "ru-conj" ;
         if !tag_is_expected { println!("\n\nUnexpected tag! {parts:#?}\n\n"); }
 
-        parts[3]
+        parts[3].trim()
     }
     pub async fn form_and_lemma(&self, client: &reqwest::Client) -> Vec<(String, &str)> {
 
@@ -30,7 +30,7 @@ impl RuConj {
         let html = Html::parse_fragment(&res);
 
         for form in super::class_selectors::ALL {
-            let try_to_get = RuConj::get_form(&html, form);
+            let try_to_get = self.get_form(&html, form);
             if let Some(form) = try_to_get {
                 form_lemma_tuples.push(
                     (form, self.lemma())

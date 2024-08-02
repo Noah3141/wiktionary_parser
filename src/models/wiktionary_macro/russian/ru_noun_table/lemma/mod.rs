@@ -7,12 +7,16 @@ mod test;
 
 
 impl RuNounTable {
-    pub fn lemma(&self) -> String {
+    // todo Numerals like сто
+    pub fn lemma(&self) -> String { 
         let without_brackets = self.macro_text
             .strip_prefix("{{")
             .expect("Starting brackets")
             .strip_suffix("}}")
             .expect("ending brackets");
+
+        let tag_is_expected = without_brackets.starts_with("ru-noun-table") ;
+        if !tag_is_expected { println!("\n\nUnexpected tag! {{{without_brackets}}}\n\n"); }
 
         let mut parts = without_brackets.split("|")
             .into_iter()
@@ -20,18 +24,22 @@ impl RuNounTable {
                 !segment.contains("=") // named parameter segment
             })
             .filter(|segment| -> bool { // sometimes provided sometimes assumed stress pattern param
-                !["a", "b", "c", "d", "e", "f", "b'", "d'", "f'", "f''"]
-                    .iter().any(|param| -> bool { segment == param }) // not any is equal to a param flag
+                ![
+                    "a", "b", "c", "d", "e", "f", "b'", "d'", "f'", "f''", "d'",
+                    "m"
+                ]
+                    .iter().any(|param| -> bool { segment.contains(param)}) // not any is equal to a param flag
             });
 
-        let tag_is_expected = parts.next() == Some("ru-noun-table") ;
-        if !tag_is_expected { println!("\n\nUnexpected tag! {parts:#?}\n\n"); }
+
 
         let maybe_lemma = parts.next();
 
         match maybe_lemma {
             None => return self.page_title.to_string(),   // Single syllable words
             Some(mut text) => {
+                if text == "" { return self.page_title.to_string() }
+
                 if !text.contains("[") {
                     if let Some(l) = text.find("//") {
                         text = &text[..l]
@@ -41,23 +49,22 @@ impl RuNounTable {
                     let mut segments = vec![text];
                     segments.extend(parts);
 
-                    let text = segments.into_iter()
+                    let text: String = segments.into_iter()
                         .filter_map(|seg| {
                             match seg {
-                                "_" => Some(" "),
-                                "-" => Some("-"),
+                                "_" => Some(" ".to_string()),
+                                "-" => Some("-".to_string()),
                                 "$" => None,
                                 string => {
                                     if !string.ends_with("]]") { None }
                                     else {
-                                        let mut word = string.strip_suffix("]]").expect("suffix in this context");
-                                        word = word.strip_prefix("[[").unwrap_or(word);
+                                        let word = string.chars().filter(|c| *c != ']' && *c != '[').collect::<String>();
                                         Some(word)
                                     }
                                 }
                             }
                         })
-                        .collect::<Vec<&str>>()
+                        .collect::<Vec<String>>()
                         .join("");
                     text
                 }

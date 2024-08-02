@@ -1,3 +1,4 @@
+use ipa::Ipa;
 use reqwest::Request;
 use serde::{Deserialize, Serialize};
 use affix::Affix;
@@ -24,11 +25,14 @@ pub mod label;
 pub mod synonyms;
 pub mod reference;
 pub mod participle_of;
+pub mod ipa;
 //
 pub mod russian;
 pub mod belarusian;
 pub mod ukrainian;
 
+#[cfg(test)]
+mod test;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum WiktionaryMacro {
@@ -41,6 +45,7 @@ pub enum WiktionaryMacro {
     Affix(Affix),
     Synonyms(Synonyms),
     Reference(Reference),
+    Ipa(Ipa),
     // Belarusian
     BeADecl(BeADecl),
     BeConj(BeConj),
@@ -136,6 +141,7 @@ impl WiktionaryMacro {
             Affix::TAG => Self::Affix(Affix { page_id, page_title, language, section, macro_text }),
             Label::TAG => Self::Label(Label { page_id, page_title, language, section, macro_text }),
             ParticipleOf::TAG => Self::ParticipleOf(ParticipleOf  { page_id, page_title, language, section, macro_text }),
+            Ipa::TAG => Self::Ipa(Ipa { page_id, page_title, language, section, macro_text }),
             // Belarusian
             BeADecl::TAG => Self::BeADecl(BeADecl { page_id, page_title, language, section, macro_text }),
             BeAdj::TAG => Self::BeAdj(BeAdj { page_id, page_title, language, section, macro_text }),
@@ -218,6 +224,14 @@ pub trait Expand {
         let res = self.expand_with(&client).await;
         let fragment = scraper::Html::parse_fragment(&res);
         fragment
+    }
+
+    fn check_head(&self, html: &scraper::Html, text: &str) -> bool {
+        let selector = scraper::Selector::parse(".NavHead").unwrap();
+        let first_match = html.select(&selector).next().expect("a first element selected by classname");
+        let inner_text = first_match.text().collect::<Vec<&str>>().join(" ");
+        let found = inner_text.to_string().contains(text);
+        found
     }
 
     /// See `.expand_with`, except this launches a new client inefficiently.

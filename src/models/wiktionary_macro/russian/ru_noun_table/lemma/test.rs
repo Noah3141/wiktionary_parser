@@ -510,3 +510,65 @@ fn спина() {
         "спина\u{301}"
     )
 }
+
+
+#[test]
+fn лябемольмажор() {
+    let noun_table = RuNounTable {
+        page_id: 57151,
+        page_title: "ля-бемоль мажор".to_string(),
+        language: Russian,
+        section: Noun,
+        macro_text: "{{ru-noun-table|[[ля]]-[[бемо́ль]] [[мажо́р]]|n=sg}}".to_string()
+    };
+    assert_eq!(
+        noun_table.lemma(),
+        "ля-бемо́ль мажо́р"
+    )
+}
+
+#[test]
+fn дом() {
+    let noun_table = RuNounTable {
+        page_id: 732715,
+        page_title: "дом".to_string(),
+        language: Russian,
+        section: Noun,
+        macro_text: "{{ru-noun-table|c||(1)|or|e|pltail=*|notes=* Archaic or nonstandard.|par=+|loc=+}}".to_string(),
+    };
+    assert_eq!(
+        noun_table.lemma(),
+        "дом"
+    )
+}
+
+#[test]
+fn ves() {
+    let noun_table = RuNounTable {
+        page_id: 732715,
+        page_title: "весь".to_string(),
+        language: Russian,
+        section: Noun,
+        macro_text: "{{ru-noun-table||f}}".to_string(),
+    };
+    assert_eq!(
+        noun_table.lemma(),
+        "весь"
+    )
+}
+
+
+#[test]
+fn царь() {
+    let noun_table = RuNounTable {
+        page_id: 732715,
+        page_title: "царь".to_string(),
+        language: Russian,
+        section: Noun,
+        macro_text: "{{ru-noun-table|b||m|voc=~ю́|a=an}}".to_string(),
+    };
+    assert_eq!(
+        noun_table.lemma(),
+        "царь"
+    )
+}

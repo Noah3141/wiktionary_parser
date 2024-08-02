@@ -8,7 +8,7 @@ use super::RuConj;
 impl RuConj {
 
     /// `form` needs to provide a wiktionary_macro::russian::ru_conj::class_labels
-    pub fn get_form(html: &scraper::Html, form_selector: &str) -> Option<String> {
+    pub fn get_form(&self, html: &scraper::Html, form_selector: &str) -> Option<String> {
         let selector = Selector::parse(form_selector).unwrap();
         let first_match: scraper::ElementRef = html.select(&selector).next()?;
         let inner_text = first_match.text().collect::<Vec<&str>>()[0];
@@ -16,27 +16,14 @@ impl RuConj {
         Some(text)
     }
 
-    pub fn is_perfective(html: &scraper::Html,) -> bool {
-        let selector = Selector::parse(".NavHead").unwrap();
-        let first_match = html.select(&selector).next().expect("a first element selected by classname");
-        let inner_text = first_match.text().collect::<Vec<&str>>().join(" ");
-        let text = inner_text.to_string();
-        let is_perfective  =  text.contains(" perfective");
-        is_perfective
+    pub fn is_perfective(&self, html: &scraper::Html,) -> bool {
+        self.check_head(html, " perfective")
     }
-    pub fn is_imperfective(html: &scraper::Html,) -> bool {
-        let selector = Selector::parse(".NavHead").unwrap();
-        let first_match = html.select(&selector).next().expect("a first element selected by classname");
-        let inner_text = first_match.text().collect::<Vec<&str>>().join(" ");
-        let text = inner_text.to_string();
-        text.contains("imperfective")
+    pub fn is_imperfective(&self, html: &scraper::Html,) -> bool {
+        self.check_head(html, "imperfective")
     }
-
-    pub fn is_transitive(html: &scraper::Html) -> bool {
-        let selector = Selector::parse(".NavHead").unwrap();
-        let first_match = html.select(&selector).next().expect("a first element selected by classname");
-        let inner_text = first_match.text().collect::<Vec<&str>>().join(" ");
-        let text = inner_text.to_string();
-        text.contains(" transitive")
+    
+    pub fn is_transitive(&self, html: &scraper::Html) -> bool {
+        self.check_head(html, " transitive")
     }
 }

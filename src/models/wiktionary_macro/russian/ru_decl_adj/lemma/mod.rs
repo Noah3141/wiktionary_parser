@@ -1,3 +1,5 @@
+use std::io::BufWriter;
+
 use scraper::{Html, Selector};
 use super::RuDeclAdj;
 use crate::{models::wiktionary_macro::Expand, utils::select_from};
@@ -26,10 +28,13 @@ impl RuDeclAdj {
 
                 if *segment == "-" && without_brackets.contains("manual") {
                     if let Some(lemma) = select_from(without_brackets, "nom_mp=", "|") {
-                        return lemma
+                        return lemma.trim()
                     };
                     if let Some(lemma) = select_from(without_brackets, "nom_m=", "|") {
-                        return lemma
+                        return lemma.trim()
+                    };
+                    if let Some(lemma) = select_from(without_brackets, "nom_sg=", "|") {
+                        return lemma.trim()
                     };
                     panic!("Couldn't figure out this manual template: {{{without_brackets}}}")
                 }
@@ -46,7 +51,7 @@ impl RuDeclAdj {
         let fragment = Html::parse_fragment(&res);
 
         for classname in super::class_selectors::ALL {
-            if let Some(form) = RuDeclAdj::get_form(&fragment, classname) {
+            if let Some(form) = self.get_form(&fragment, classname) {
                 form_lemma_tuples.push( (form, self.lemma()) )
             }
         }
