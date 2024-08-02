@@ -5,6 +5,7 @@ pub mod uk_ndecl;
 pub mod uk_noun;
 pub mod uk_verb;
 pub mod uk_conj;
+pub mod uk_adv;
 
 pub use {
     uk_adecl::UkADecl,
@@ -13,5 +14,6 @@ pub use {
     uk_ipa::UkIpa,
     uk_ndecl::UkNDecl,
     uk_noun::UkNoun,
-    uk_verb::UkVerb
+    uk_verb::UkVerb,
+    uk_adv::UkAdv,
 };

@@ -110,6 +110,6 @@ async fn perfectivity_detects() {
     let client = reqwest::Client::new();
     let html = table.html(&client).await;
 
-    assert!(BeConj::is_perfective(&html));
-    assert!(!BeConj::is_imperfective(&html));
+    assert!(table.is_perfective(&html));
+    assert!(!table.is_imperfective(&html));
 }

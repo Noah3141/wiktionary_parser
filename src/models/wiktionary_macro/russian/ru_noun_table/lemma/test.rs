@@ -572,3 +572,19 @@ fn царь() {
         "царь"
     )
 }
+
+#[test]
+fn сексапилочка() {
+    let table = RuNounTable {
+        page_id: 295351,
+        page_title: "сексапилочка".to_string(),
+        language: Russian,
+        section: Noun,
+        macro_text: "{{ru-noun-table|сексапи́лочка//sɛksapíločka|*|a=an}}".to_string()
+    };
+
+    assert_eq!(
+        table.lemma(),
+        "сексапи́лочка"
+    )
+}

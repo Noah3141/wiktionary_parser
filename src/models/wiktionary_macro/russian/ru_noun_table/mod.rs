@@ -46,4 +46,7 @@ impl RuNounTable {
     pub fn is_old(&self) -> bool {
         self.macro_text.contains("|old=1") | self.macro_text.contains("|old=y")
     }
+    pub fn is_pronoun(&self) -> bool {
+        self.macro_text.contains("|pos=pronoun")
+    }
 }

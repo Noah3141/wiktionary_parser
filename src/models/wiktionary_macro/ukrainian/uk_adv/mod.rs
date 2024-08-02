@@ -1,12 +1,11 @@
-
 use crate::models::section_header::SectionHeader;
 use serde::{Deserialize, Serialize};
 use crate::models::language::Language;
 
-/// # Belarusian Adjective Declension Macro
-/// ##
+/// # Ukrainian Adverb
+/// ## The adverb
 #[derive(Debug, Serialize, Deserialize)]
-pub struct BeADecl {
+pub struct UkAdv {
     pub page_id: u64,
     pub page_title: String,
     pub language: Language,
@@ -14,10 +13,6 @@ pub struct BeADecl {
     pub macro_text: String,
 }
 
-pub mod entry;
-pub mod lemma;
-pub mod expand;
-
-impl BeADecl {
-    pub const TAG: &'static str = "be-adecl";
+impl UkAdv {
+    pub const TAG: &'static str = "uk-adv";
 }

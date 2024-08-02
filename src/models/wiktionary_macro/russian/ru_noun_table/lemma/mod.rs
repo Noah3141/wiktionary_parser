@@ -20,6 +20,13 @@ impl RuNounTable {
 
         let mut parts = without_brackets.split("|")
             .into_iter()
+            .map(|segment| -> &str {
+                if let Some(slashes) = segment.find("//") {
+                    &segment[..slashes]
+                } else {
+                    segment
+                }
+            })
             .filter(|segment| -> bool {
                 !segment.contains("=") // named parameter segment
             })

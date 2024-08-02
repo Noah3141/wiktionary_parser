@@ -69,6 +69,7 @@ pub enum WiktionaryMacro {
     UkADecl(UkADecl),
     UkAdj(UkAdj),
     UkIpa(UkIpa),
+    UkAdv(UkAdv),
     UkNDecl(UkNDecl),
     UkNoun(UkNoun),
     UkVerb(UkVerb),
@@ -164,6 +165,7 @@ impl WiktionaryMacro {
             // Ukrainian
             UkADecl::TAG => Self::UkADecl(UkADecl { page_id, page_title, language, section, macro_text }),
             UkAdj::TAG => Self::UkAdj(UkAdj { page_id, page_title, language, section, macro_text }),
+            UkAdv::TAG => Self::UkAdv(UkAdv { page_id, page_title, language, section, macro_text }),
             UkIpa::TAG => Self::UkIpa(UkIpa { page_id, page_title, language, section, macro_text }),
             UkNDecl::TAG => Self::UkNDecl(UkNDecl { page_id, page_title, language, section, macro_text }),
             UkNoun::TAG => Self::UkNoun(UkNoun { page_id, page_title, language, section, macro_text }),
@@ -226,12 +228,12 @@ pub trait Expand {
         fragment
     }
 
-    fn check_head(&self, html: &scraper::Html, text: &str) -> bool {
+    fn check_head<'text>(&self, html: &scraper::Html, text: &'text str) -> Result<bool, &'text str> {
         let selector = scraper::Selector::parse(".NavHead").unwrap();
-        let first_match = html.select(&selector).next().expect("a first element selected by classname");
+        let first_match = html.select(&selector).next().ok_or(text)?;
         let inner_text = first_match.text().collect::<Vec<&str>>().join(" ");
         let found = inner_text.to_string().contains(text);
-        found
+        Ok(found)
     }
 
     /// See `.expand_with`, except this launches a new client inefficiently.

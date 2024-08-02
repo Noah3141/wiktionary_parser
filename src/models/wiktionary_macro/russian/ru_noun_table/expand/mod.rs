@@ -1,4 +1,4 @@
-use crate::{ models::wiktionary_macro::Expand};
+use crate::models::wiktionary_macro::Expand;
 use super::RuNounTable;
 
 impl Expand for RuNounTable {

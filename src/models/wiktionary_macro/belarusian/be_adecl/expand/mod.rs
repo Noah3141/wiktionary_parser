@@ -1,7 +1,7 @@
 use crate::models::wiktionary_macro::Expand;
-use super::BeConj;
+use super::BeADecl;
 
-impl Expand for BeConj {
+impl Expand for BeADecl {
     fn macro_text(&self) -> &str {
         &self.macro_text
     }
