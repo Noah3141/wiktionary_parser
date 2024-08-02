@@ -2,6 +2,8 @@
 mod test;
 
 use scraper::Selector;
+use crate::models::{gender::Gender, wiktionary_macro::Expand};
+
 use super::BeNDecl;
 
 impl BeNDecl {
@@ -16,5 +18,11 @@ impl BeNDecl {
     }
 
 
+    pub fn gender(&self, html: &scraper::Html) -> Gender {
+        if let true = self.check_head(&html, "masc-form").expect("check_head attempt") { return Gender::Masculine };
+        if let true = self.check_head(&html, "fem-form").expect("check_head attempt") { return Gender::Feminine };
+        if let true = self.check_head(&html, "neut-form").expect("check_head attempt") { return Gender::Neuter };
+        panic!("Should not occur! Couldn't determine gender from NavHead!")
+    }
 
 }

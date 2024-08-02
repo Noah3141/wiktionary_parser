@@ -2,7 +2,6 @@
 mod test;
 
 use scraper::Selector;
-use crate::models::wiktionary_macro::Expand;
 use super::UkADecl;
 
 impl UkADecl {
