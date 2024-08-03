@@ -18,11 +18,18 @@ impl BeNDecl {
     }
 
 
-    pub fn gender(&self, html: &scraper::Html) -> Gender {
-        if let true = self.check_head(&html, "masc-form").expect("check_head attempt") { return Gender::Masculine };
-        if let true = self.check_head(&html, "fem-form").expect("check_head attempt") { return Gender::Feminine };
-        if let true = self.check_head(&html, "neut-form").expect("check_head attempt") { return Gender::Neuter };
-        panic!("Should not occur! Couldn't determine gender from NavHead!")
+    pub fn gender(&self, html: &scraper::Html) -> Result<Gender, ()> {
+        if let true = self.check_head(&html, "masc-form").expect("check_head attempt") { return Ok(Gender::Masculine) };
+        if let true = self.check_head(&html, "fem-form").expect("check_head attempt") { return Ok(Gender::Feminine) };
+        if let true = self.check_head(&html, "neut-form").expect("check_head attempt") { return Ok(Gender::Neuter) };
+        
+        if let true = self.check_head(&html, "masc ").expect("check_head attempt") { return Ok(Gender::Masculine) };
+        if let true = self.check_head(&html, "fem ").expect("check_head attempt") { return Ok(Gender::Feminine) };
+        if let true = self.check_head(&html, "neut ").expect("check_head attempt") { return Ok(Gender::Neuter) };
+        
+        if self.lemma().ends_with("ая") { return Ok(Gender::Feminine)}
+
+        Err(())
     }
 
 }

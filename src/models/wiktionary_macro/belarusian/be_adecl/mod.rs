@@ -25,7 +25,7 @@ impl BeADecl {
 
 /// CSS selectors for forms
 pub mod class_selectors {
-    pub const ALL: [&str; 30] = [LOC_M,LOC_F,LOC_N,LOC_P,INS_M,INS_F,INS_N,INS_P,AN_ACC_M,INAN_ACC_M,ACC_F,ACC_N,IN_ACC_P,INAN_ACC_P,DAT_M,DAT_F,DAT_N,DAT_P,GEN_M,GEN_F,GEN_N,GEN_P,NOM_M,NOM_F,NOM_N,NOM_P,SHORT_M,SHORT_F,SHORT_N,SHORT_P,];
+    pub const ALL: [&str; 30] = [LOC_M,LOC_F,LOC_N,LOC_P,INS_M,INS_F,INS_N,INS_P,AN_ACC_M,IN_ACC_M,ACC_F,ACC_N,IN_ACC_P,AN_ACC_P,DAT_M,DAT_F,DAT_N,DAT_P,GEN_M,GEN_F,GEN_N,GEN_P,NOM_M,NOM_F,NOM_N,NOM_P,SHORT_M,SHORT_F,SHORT_N,SHORT_P,];
     //
     pub const LOC_M: &'static str = ".loc\\|m\\/\\/n\\|s-form-of";
     pub const LOC_F: &'static str = ".loc\\|f\\|s-form-of";
@@ -38,11 +38,11 @@ pub mod class_selectors {
     pub const INS_P: &'static str = ".ins\\|p-form-of";
     //
     pub const AN_ACC_M: &'static str = ".an\\|acc\\|m\\|s-form-of";
-    pub const INAN_ACC_M: &'static str = ".in\\|acc\\|m\\|s-form-of";
+    pub const IN_ACC_M: &'static str = ".in\\|acc\\|m\\|s-form-of";
     pub const ACC_F: &'static str = ".acc\\|f\\|s-form-of";
     pub const ACC_N: &'static str = ".acc\\|n\\|s-form-of";
     pub const IN_ACC_P: &'static str = ".in\\|acc\\|p-form-of";
-    pub const INAN_ACC_P: &'static str = ".an\\|acc\\|p-form-of";
+    pub const AN_ACC_P: &'static str = ".an\\|acc\\|p-form-of";
     //
     pub const DAT_M: &'static str = ".dat\\|m\\/\\/n\\|s-form-of";
     pub const DAT_F: &'static str = ".dat\\|f\\|s-form-of";

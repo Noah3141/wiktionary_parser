@@ -15,13 +15,18 @@ impl BeNDecl {
 
         let parts: Vec<&str> = without_brackets.split("|").collect();
 
-        let tag_is_expected = parts[0] == "be-conj" ;
+        let tag_is_expected = parts[0] == "be-ndecl" ;
         if !tag_is_expected { println!("\n\nUnexpected tag! {parts:#?}\n\n"); }
 
-        if let Some(l) = parts[1].find("&lt") {
-            &parts[1][..l]
+        let without_params = match parts[1].find("&lt") {
+            Some(l) => &parts[1][..l],
+            None => parts[1],
+        };
+
+        if without_params.starts_with("((") {
+            &without_params[2..]
         } else {
-            parts[1]
+            without_params
         }
     }
     

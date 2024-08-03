@@ -16,7 +16,7 @@ impl BeADecl {
 
         let parts: Vec<&str> = without_brackets.split("|").collect();
 
-        let tag_is_expected = parts[0] == "uk-adecl" ;
+        let tag_is_expected = parts[0] == "be-adecl" ;
         if !tag_is_expected { println!("\n\nUnexpected tag! {parts:#?}\n\n"); }
 
         match parts.get(1) {
