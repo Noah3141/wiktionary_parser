@@ -21,7 +21,13 @@ impl RuConj {
         let tag_is_expected = parts[0] == "ru-conj" ;
         if !tag_is_expected { println!("\n\nUnexpected tag! {parts:#?}\n\n"); }
 
-        parts[3].trim()
+        let lemma = parts[3];
+
+        if lemma.contains("//") {
+            lemma[..lemma.find("//").unwrap()].trim()
+        } else {
+            lemma.trim()
+        }
     }
     pub async fn form_and_lemma(&self, client: &reqwest::Client) -> Vec<(String, &str)> {
 
