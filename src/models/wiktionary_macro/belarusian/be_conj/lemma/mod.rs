@@ -5,6 +5,7 @@ use scraper::{Html, Selector};
 use crate::models::wiktionary_macro::Expand;
 use super::BeConj;
 
+
 impl BeConj {
     /// Parses the accented lemma from the macro text. Requires no expansion but has to navigate the template syntax.
     /// Docs for the template suggest that the accented lemma is a positional parameter reliably found at param 3 
@@ -20,10 +21,15 @@ impl BeConj {
         let tag_is_expected = parts[0] == "be-conj" ;
         if !tag_is_expected { println!("\n\nUnexpected tag! {parts:#?}\n\n"); }
 
-        if let Some(l) = parts[1].find("&lt") {
-            &parts[1][..l]
+        let without_params = match parts[1].find("&lt") {
+            Some(l) => &parts[1][..l],
+            None => parts[1],
+        };
+
+        if without_params.starts_with("((") {
+            &without_params[2..]
         } else {
-            parts[1]
+            without_params
         }
     }
     pub async fn form_and_lemma(&self, client: &reqwest::Client) -> Vec<(String, &str)> {

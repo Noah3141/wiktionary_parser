@@ -5,6 +5,10 @@ use scraper::Html;
 use crate::{models::wiktionary_macro::Expand, utils::select_from};
 use super::BeADecl;
 
+// todo 
+// NULL, ((цяжкі́,ця́жкі)), NULL, Adjective, {"lemma":"((цяжкі́,ця́жкі))","ipa":"[t͡sʲaʂˈkʲi]","nom_masc":"цяжкі́","acc_masc":"цяжко́га","gen_masc":"цяжко́га","dat_masc":"цяжко́му","ins_masc":"цяжкі́м","pre_masc":"цяжкі́м","nom_fem":"цяжка́я","acc_fem":"цяжку́ю","gen_fem":"цяжко́й","dat_fem":"цяжко́й","ins_fem":"цяжко́й","pre_fem":"цяжко́й","nom_neut":"цяжко́е","acc_neut":"цяжко́е","gen_neut":"цяжко́га","dat_neut":"цяжко́му","ins_neut":"цяжкі́м","pre_neut":"цяжкі́м","nom_plur":"цяжкі́я","acc_plur":"цяжкі́я","gen_plur":"цяжкі́х","dat_plur":"цяжкі́м","ins_plur":"цяжкі́мі","pre_plur":"цяжкі́х","m_short":null,"f_short":null,"n_short":null,"p_short":null}
+// NULL, ((расяны́,рася́ны)), NULL, Adjective, {"lemma":"((расяны́,рася́ны))","ipa":"[rasʲaˈnɨ]","nom_masc":"расяны́","acc_masc":"расяно́га","gen_masc":"расяно́га","dat_masc":"расяно́му","ins_masc":"расяны́м","pre_masc":"расяны́м","nom_fem":"расяна́я","acc_fem":"расяну́ю","gen_fem":"расяно́й","dat_fem":"расяно́й","ins_fem":"расяно́й","pre_fem":"расяно́й","nom_neut":"расяно́е","acc_neut":"расяно́е","gen_neut":"расяно́га","dat_neut":"расяно́му","ins_neut":"расяны́м","pre_neut":"расяны́м","nom_plur":"расяны́я","acc_plur":"расяны́я","gen_plur":"расяны́х","dat_plur":"расяны́м","ins_plur":"расяны́мі","pre_plur":"расяны́х","m_short":null,"f_short":null,"n_short":null,"p_short":null}
+
 impl BeADecl {
     /// Parses the accented lemma from the macro text. Requires no expansion but has to navigate the template syntax.
     pub fn lemma(&self) -> &str {

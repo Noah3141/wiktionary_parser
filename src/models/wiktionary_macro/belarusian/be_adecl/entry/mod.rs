@@ -18,6 +18,11 @@ impl BeADecl {
         let retry = match form_selector {
             class_selectors::AN_ACC_M => ".acc\\|m\\|s-form-of",
             class_selectors::AN_ACC_P => ".acc\\|p-form-of",
+            class_selectors::GEN_M => ".gen\\|m\\|s-form-of",
+            class_selectors::DAT_M => ".dat\\|m\\|s-form-of",
+            class_selectors::LOC_M => ".loc\\|m\\|s-form-of",
+            class_selectors::INS_M => ".ins\\|m\\|s-form-of",
+            class_selectors::NOM_M => ".nom\\|m\\|s-form-of",
             _ => return None
         };
 

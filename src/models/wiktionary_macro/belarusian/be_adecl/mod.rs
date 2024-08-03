@@ -65,3 +65,9 @@ pub mod class_selectors {
     pub const SHORT_P: &'static str = ".short\\|p-form-of";
     
 }
+
+impl BeADecl {
+    pub fn is_surname(&self) -> bool {
+        self.macro_text.contains("surname")
+    }
+}
