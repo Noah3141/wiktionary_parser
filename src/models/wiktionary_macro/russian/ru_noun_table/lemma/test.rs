@@ -588,3 +588,24 @@ fn сексапилочка() {
         "сексапи́лочка"
     )
 }
+
+#[test]
+fn determiner() {
+    let table = RuNounTable {
+        page_id: 295351,
+        page_title: "сколько".to_string(),
+        language: Russian,
+        section: Noun,
+        macro_text: "{{ru-noun-table||manual|n=pl|a=b
+|nom_pl=ско́лько
+|gen_pl=ско́льких,скольки́х*
+|dat_pl=ско́льким,скольки́м*
+|ins_pl=ско́лькими,скольки́ми*
+|pre_pl=ско́льких,скольки́х*
+|notes=* Variants with stress on the second syllable are not considered normative, but are common.
+}}".to_string()
+    };
+
+    assert_eq!(table.lemma(), "ско́лько")
+}
+
