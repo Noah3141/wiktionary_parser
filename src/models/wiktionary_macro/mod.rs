@@ -89,6 +89,7 @@ impl WiktionaryMacro {
         let page_title = select_from(page_xml, "<title>", "</title>").expect("page title").to_string();
         if  page_title.starts_with("Wiktionary:") || 
             page_title.starts_with("User:") ||
+            page_title.starts_with("Talk:") ||
             page_title.starts_with("Module:") ||
             page_title.starts_with("Template:") ||
             page_title.starts_with("Appendix:")
