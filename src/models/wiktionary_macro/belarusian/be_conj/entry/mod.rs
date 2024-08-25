@@ -24,5 +24,6 @@ impl BeConj {
     pub fn is_transitive(&self, html: &scraper::Html) -> bool {
         self.check_head(html, " transitive").expect("check_head for transitive")
     }
+    
 
 }

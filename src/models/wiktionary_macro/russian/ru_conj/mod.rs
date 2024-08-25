@@ -1,11 +1,11 @@
+use crate::models::language::Language;
 use crate::models::section_header::SectionHeader;
 use serde::{Deserialize, Serialize};
-use crate::models::language::Language;
 
-/// 
-/// # Russian Conjugation Table 
+///
+/// # Russian Conjugation Table
 /// ## Expands into the conjugation forms of a Russian verb
-/// 
+///
 /// 1)
 #[derive(Debug, Serialize, Deserialize)]
 pub struct RuConj {
@@ -16,9 +16,9 @@ pub struct RuConj {
     pub macro_text: String,
 }
 
+pub mod entry;
 pub mod expand;
 pub mod lemma;
-pub mod entry;
 
 impl RuConj {
     pub const TAG: &'static str = "ru-conj";
@@ -26,7 +26,33 @@ impl RuConj {
 
 /// CSS selectors for forms
 pub mod class_selectors {
-    pub const ALL: [&str; 25] = [INFINITIVE,PAST_ACTIVE_PARTICIPLE,PAST_PASSIVE_PARTICIPLE,PRESENT_PASSIVE_PARTICIPLE,PRESENT_ACTIVE_PARTICIPLE,PRESENT_ADV_PARTICIPLE,PAST_ADV_PARTICIPLE,Я_PRESENT_INDICATIVE,ТЫ_PRESENT_INDICATIVE,ОН_PRESENT_INDICATIVE,МЫ_PRESENT_INDICATIVE,ВЫ_PRESENT_INDICATIVE,ОНИ_PRESENT_INDICATIVE,Я_FUTURE_INDICATIVE,ТЫ_FUTURE_INDICATIVE,ОН_FUTURE_INDICATIVE,МЫ_FUTURE_INDICATIVE,ВЫ_FUTURE_INDICATIVE,ОНИ_FUTURE_INDICATIVE,ТЫ_IMPERATIVE,ВЫ_IMPERATIVE,MASC_PAST,PLUR_PAST,FEM_PAST,NEUT_PAST,]; 
+    pub const ALL: [&str; 25] = [
+        INFINITIVE,
+        PAST_ACTIVE_PARTICIPLE,
+        PAST_PASSIVE_PARTICIPLE,
+        PRESENT_PASSIVE_PARTICIPLE,
+        PRESENT_ACTIVE_PARTICIPLE,
+        PRESENT_ADV_PARTICIPLE,
+        PAST_ADV_PARTICIPLE,
+        Я_PRESENT_INDICATIVE,
+        ТЫ_PRESENT_INDICATIVE,
+        ОН_PRESENT_INDICATIVE,
+        МЫ_PRESENT_INDICATIVE,
+        ВЫ_PRESENT_INDICATIVE,
+        ОНИ_PRESENT_INDICATIVE,
+        Я_FUTURE_INDICATIVE,
+        ТЫ_FUTURE_INDICATIVE,
+        ОН_FUTURE_INDICATIVE,
+        МЫ_FUTURE_INDICATIVE,
+        ВЫ_FUTURE_INDICATIVE,
+        ОНИ_FUTURE_INDICATIVE,
+        ТЫ_IMPERATIVE,
+        ВЫ_IMPERATIVE,
+        MASC_PAST,
+        PLUR_PAST,
+        FEM_PAST,
+        NEUT_PAST,
+    ];
 
     pub const INFINITIVE: &'static str = ".inf-form-of";
     pub const PAST_ACTIVE_PARTICIPLE: &'static str = ".past\\|act\\|part-form-of";
@@ -54,14 +80,17 @@ pub mod class_selectors {
     pub const ВЫ_IMPERATIVE: &'static str = ".\\32\\|p\\|imp-form-of";
     //
     pub const MASC_PAST: &'static str = ".m\\|s\\|past\\|ind-form-of";
-    pub const PLUR_PAST: &'static str = ".p\\|past\\|ind-form-of"; 
+    pub const PLUR_PAST: &'static str = ".p\\|past\\|ind-form-of";
     pub const FEM_PAST: &'static str = ".f\\|s\\|past\\|ind-form-of";
     pub const NEUT_PAST: &'static str = ".n\\|s\\|past\\|ind-form-of";
 }
 
-
 impl RuConj {
     pub fn is_old(&self) -> bool {
         self.macro_text.contains("|old=1")
+    }
+
+    pub fn is_impersonal(&self) -> bool {
+        self.macro_text.contains("|impf-impers")
     }
 }
