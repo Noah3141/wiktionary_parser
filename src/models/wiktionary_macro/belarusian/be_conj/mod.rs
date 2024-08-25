@@ -83,3 +83,9 @@ pub mod class_selectors {
     pub const NEUT_PAST: &'static str = ".n\\|s\\|past\\|ind-form-of";
     pub const PLUR_PAST: &'static str = ".p\\|past\\|ind-form-of";
 }
+
+impl BeConj {
+    pub fn is_impersonal(&self) -> bool {
+        self.macro_text.contains("impers")
+    }
+}

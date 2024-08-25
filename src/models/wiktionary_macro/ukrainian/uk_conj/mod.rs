@@ -1,11 +1,11 @@
+use crate::models::language::Language;
 use crate::models::section_header::SectionHeader;
 use serde::{Deserialize, Serialize};
-use crate::models::language::Language;
 
 ///
-/// # Ukrainian Conjugation Table 
-/// ## 
-/// 
+/// # Ukrainian Conjugation Table
+/// ##
+///
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UkConj {
     pub page_id: u64,
@@ -15,18 +15,43 @@ pub struct UkConj {
     pub macro_text: String,
 }
 
-pub mod lemma;
-pub mod expand;
 pub mod entry;
+pub mod expand;
+pub mod lemma;
 
 impl UkConj {
     pub const TAG: &'static str = "uk-conj";
 }
 
-
 /// CSS selectors for forms
 pub mod class_selectors {
-    pub const ALL: [&str; 25] = [INFINITIVE,PAST_ACTIVE_PARTICIPLE,PAST_PASSIVE_PARTICIPLE,PRESENT_PASSIVE_PARTICIPLE,PRESENT_ACTIVE_PARTICIPLE,PRESENT_ADV_PARTICIPLE,PAST_ADV_PARTICIPLE,Я_PRESENT_INDICATIVE,ТИ_PRESENT_INDICATIVE,ВІН_PRESENT_INDICATIVE,МИ_PRESENT_INDICATIVE,ВИ_PRESENT_INDICATIVE,ВОНИ_PRESENT_INDICATIVE,Я_FUTURE_INDICATIVE,ТИ_FUTURE_INDICATIVE,ВІН_FUTURE_INDICATIVE,МИ_FUTURE_INDICATIVE,ВИ_FUTURE_INDICATIVE,ВОНИ_FUTURE_INDICATIVE,ТИ_IMPERATIVE,ВИ_IMPERATIVE,MASC_PAST,PLUR_PAST,FEM_PAST,NEUT_PAST,]; 
+    pub const ALL: [&str; 25] = [
+        INFINITIVE,
+        PAST_ACTIVE_PARTICIPLE,
+        PAST_PASSIVE_PARTICIPLE,
+        PRESENT_PASSIVE_PARTICIPLE,
+        PRESENT_ACTIVE_PARTICIPLE,
+        PRESENT_ADV_PARTICIPLE,
+        PAST_ADV_PARTICIPLE,
+        Я_PRESENT_INDICATIVE,
+        ТИ_PRESENT_INDICATIVE,
+        ВІН_PRESENT_INDICATIVE,
+        МИ_PRESENT_INDICATIVE,
+        ВИ_PRESENT_INDICATIVE,
+        ВОНИ_PRESENT_INDICATIVE,
+        Я_FUTURE_INDICATIVE,
+        ТИ_FUTURE_INDICATIVE,
+        ВІН_FUTURE_INDICATIVE,
+        МИ_FUTURE_INDICATIVE,
+        ВИ_FUTURE_INDICATIVE,
+        ВОНИ_FUTURE_INDICATIVE,
+        ТИ_IMPERATIVE,
+        ВИ_IMPERATIVE,
+        MASC_PAST,
+        PLUR_PAST,
+        FEM_PAST,
+        NEUT_PAST,
+    ];
 
     pub const INFINITIVE: &'static str = ".inf-form-of";
     pub const PAST_ACTIVE_PARTICIPLE: &'static str = ".past\\|act\\|part-form-of";
@@ -55,7 +80,13 @@ pub mod class_selectors {
     pub const МИ_IMPERATIVE: &'static str = ".\\31\\|p\\|imp-form-of";
     //
     pub const MASC_PAST: &'static str = ".m\\|s\\|past\\|ind-form-of";
-    pub const PLUR_PAST: &'static str = ".p\\|past\\|ind-form-of"; 
     pub const FEM_PAST: &'static str = ".f\\|s\\|past\\|ind-form-of";
     pub const NEUT_PAST: &'static str = ".n\\|s\\|past\\|ind-form-of";
+    pub const PLUR_PAST: &'static str = ".p\\|past\\|ind-form-of";
+}
+
+impl UkConj {
+    pub fn is_impersonal(&self) -> bool {
+        self.macro_text.contains("impers")
+    }
 }
