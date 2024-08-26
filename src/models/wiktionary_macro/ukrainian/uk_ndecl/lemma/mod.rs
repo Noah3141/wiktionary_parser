@@ -23,15 +23,21 @@ impl UkNDecl {
         let after_name = without_brackets
             .strip_prefix("uk-ndecl|")
             .expect("prefix presence");
-        let lemma = match after_name.find("&lt;") {
+        
+        if after_name.contains(" ") { // multi word stuff just give up these are peripheral concerns
+            return &self.page_title
+        }
+        
+        let mut lemma = match after_name.find("&lt;") {
             Some(lt) => &after_name[..lt],
             None => after_name,
         };
         if lemma.starts_with("((") {
-            &lemma[2..]
-        } else {
-            lemma
-        }
+            lemma = &lemma[2..]
+        } 
+
+        lemma
+
     }
 
     pub async fn form_and_lemma(&self, client: &reqwest::Client) -> Vec<(String, &str)> {

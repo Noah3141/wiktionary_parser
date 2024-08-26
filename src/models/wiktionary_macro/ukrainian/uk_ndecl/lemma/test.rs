@@ -51,3 +51,16 @@ fn слава() {
     };
     assert_eq!( table.lemma() , "сла́ва" );
 }
+
+
+#[test]
+fn СаудівськаАравія() {
+    let table = UkNDecl {
+        page_id: 188329,
+        page_title: "Саудівська Аравія".to_string(),
+        language: Language::Ukrainian,
+        section: SectionHeader::Adjective,
+        macro_text: "{{uk-ndecl|[[сау́дівський|Сау́дівська]]&lt;+&gt; [[Ара́вія]]&lt;sg&gt;}}".to_string()
+    };
+    assert_eq!( table.lemma(), "Саудівська Аравія" );
+}

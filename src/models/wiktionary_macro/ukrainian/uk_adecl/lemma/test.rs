@@ -39,3 +39,16 @@ fn радий() {
     };
     assert_eq!( table.lemma(), "ра́дий" );
 }
+
+#[test]
+fn стартовий() {
+    let table = UkADecl {
+        page_id: 188329,
+        page_title: "радий".to_string(),
+        language: Language::Ukrainian,
+        section: SectionHeader::Adjective,
+        macro_text: "{{uk-adecl|((ста́ртовий,стартови́й))}}".to_string()
+    };
+    assert_eq!( table.lemma(), "ста́ртовий" );
+}
+
