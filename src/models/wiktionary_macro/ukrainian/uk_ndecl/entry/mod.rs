@@ -120,6 +120,18 @@ impl UkNDecl {
         if let true = self.check_head(&html, "neut ").expect("check_head attempt") {
             return Gender::Neuter;
         };
+        if let true = self
+            .check_head(&html, "masc/fem")
+            .expect("check_head attempt")
+        {
+            return Gender::Masculine;
+        };
+        if let true = self
+            .check_head(&html, "fem/masc")
+            .expect("check_head attempt")
+        {
+            return Gender::Feminine;
+        };
         panic!("Should not occur! Couldn't determine gender from NavHead!")
     }
 }
