@@ -99,6 +99,9 @@ impl UkNDecl {
         {
             return Gender::Masculine;
         };
+        if let true = self.check_head(&html, "masc ").expect("check_head attempt") {
+            return Gender::Masculine;
+        };
         if let true = self
             .check_head(&html, "fem-form")
             .expect("check_head attempt")
@@ -112,6 +115,9 @@ impl UkNDecl {
             .check_head(&html, "neut-form")
             .expect("check_head attempt")
         {
+            return Gender::Neuter;
+        };
+        if let true = self.check_head(&html, "neut ").expect("check_head attempt") {
             return Gender::Neuter;
         };
         panic!("Should not occur! Couldn't determine gender from NavHead!")
