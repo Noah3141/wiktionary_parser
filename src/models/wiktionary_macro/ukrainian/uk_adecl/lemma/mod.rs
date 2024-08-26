@@ -37,11 +37,24 @@ impl UkADecl {
                     panic!("Couldn't figure out this manual template: {{{without_brackets}}}")
                 }
 
-                if let Some(lt) = segment.find("&lt;") {
-                    return &segment[..lt]
-                } else {
-                    return segment
+                let mut segment = match segment.find("&lt;") {
+                    Some(lt) => &segment[..lt],
+                    None => segment,
+                };
+                
+                if segment.starts_with("((") {
+                    segment = select_from(segment, "((", ",").unwrap();
                 }
+
+                if segment.starts_with("[[") {
+                    segment = &select_from(segment, "[[", "|").unwrap();
+                    if segment.ends_with("]]") {
+                        segment = &segment[..segment.len()-2];
+                    }
+                }
+
+
+                segment
             },
             None => &self.page_title,
         }

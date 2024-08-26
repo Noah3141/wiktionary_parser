@@ -30,6 +30,7 @@ pub mod ipa;
 pub mod russian;
 pub mod belarusian;
 pub mod ukrainian;
+pub mod polish;
 
 #[cfg(test)]
 mod test;
