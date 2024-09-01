@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///
 ///  Polish Conjugation of an Imperfective Aspect verb
 ///
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct PlConjAi {
     pub page_id: u64,
     pub page_title: String,

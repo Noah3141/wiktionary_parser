@@ -35,7 +35,7 @@ pub mod polish;
 #[cfg(test)]
 mod test;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum WiktionaryMacro {
     InflectionOf(InflectionOf),
     Label(Label),

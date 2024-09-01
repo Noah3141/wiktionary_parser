@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///
 ///  Polish Conjugation of a Perfective Aspect verb
 ///
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct PlConjAp {
     pub page_id: u64,
     pub page_title: String,

@@ -6,7 +6,7 @@ use crate::models::language::Language;
 /// # Affix Macro
 /// ## This template shows the parts (morphemes) that make up a word, for use in etymology sections.
 /// 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Affix {
     pub page_id: u64,
     pub page_title: String,

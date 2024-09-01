@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 /// ## Provides the inflected forms of a noun in a table
 ///
 /// [https://en.m.wiktionary.org/wiki/Template:ru-noun-table]
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RuNounTable {
     pub page_id: u64,
     pub page_title: String,

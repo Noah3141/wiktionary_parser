@@ -6,7 +6,7 @@ use crate::models::language::Language;
 /// # Ukrainian IPA
 /// ## Generates Ukrainian IPA of word
 /// 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct UkIpa {
     pub page_id: u64,
     pub page_title: String,

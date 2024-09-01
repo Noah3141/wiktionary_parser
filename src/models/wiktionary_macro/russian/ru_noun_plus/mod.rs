@@ -6,7 +6,7 @@ use crate::models::language::Language;
 /// ## The main macro for a Russian noun
 /// 
 /// Follows many of the same parameters as RuNounTable
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RuNounPlus {
     pub page_id: u64,
     pub page_title: String,

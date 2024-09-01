@@ -6,7 +6,7 @@ use crate::models::language::Language;
 /// 
 /// # Related Terms Macro
 /// ## Links the provided term to related terms
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RelatedTerms {
     pub page_id: u64,
     pub page_title: String,

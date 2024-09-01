@@ -9,7 +9,7 @@ use crate::models::language::Language;
 /// ## Denotes
 /// [1]: language
 /// [2]: 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Head {
     pub page_id: u64,
     pub page_title: String,

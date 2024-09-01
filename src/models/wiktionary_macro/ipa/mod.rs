@@ -7,7 +7,7 @@ use super::Expand;
 /// # IPA macro
 /// ## Generates IPA I guess...
 /// 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Ipa {
     pub page_id: u64,
     pub page_title: String,

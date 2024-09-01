@@ -4,7 +4,7 @@ use crate::models::language::Language;
 
 /// # Russian Adjective Macro
 /// ## The main macro for Russian adjectives
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RuAdj {
     pub page_id: u64,
     pub page_title: String,

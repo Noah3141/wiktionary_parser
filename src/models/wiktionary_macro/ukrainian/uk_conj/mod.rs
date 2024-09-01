@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 /// # Ukrainian Conjugation Table
 /// ##
 ///
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct UkConj {
     pub page_id: u64,
     pub page_title: String,

@@ -13,7 +13,7 @@ use crate::models::language::Language;
 ///     Multiple tags are normally separated by spaces, so that e.g. nom|f|s will be displayed as nominative feminine singular. However, when punctuation characters are used as tags, they will be displayed appropriately for that punctuation character. For example, nom|,|with|3|s|object will display as nominative, with third-person singular object (i.e. without a space preceding the comma). Among the punctuation characters recognized and handled correctly are comma, colon, parens, brackets, slash, and hyphen. The full list can be found below.
 ///     It is also possible to put // separators between one or more tags or shortcuts to create a list separated by slashes. For example, writing nom//acc will expand to nominative/accusative, and writing nom//acc//voc//dat will expand to nominative/accusative/vocative/dative.
 ///     The inflection tag ; is recognized specially and is used to separate two inflections of the same word. Sets of tags separated by a semicolon tag will be displayed on separate lines. See examples below.
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct InflectionOf {
     pub page_id: u64,
     pub page_title: String,

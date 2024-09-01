@@ -2,7 +2,7 @@
 mod test;
 
 use scraper::Selector;
-use crate::models::{gender::Gender, section_header::SectionHeader, wiktionary_macro::Expand};
+use crate::models::{gender::Gender, wiktionary_macro::Expand};
 use super::RuNounTable;
 
 impl RuNounTable {

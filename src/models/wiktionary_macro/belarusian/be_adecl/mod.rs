@@ -5,7 +5,7 @@ use crate::models::language::Language;
 
 /// # Belarusian Adjective Declension Macro
 /// ##
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct BeADecl {
     pub page_id: u64,
     pub page_title: String,

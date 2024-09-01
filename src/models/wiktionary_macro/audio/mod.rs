@@ -6,7 +6,7 @@ use crate::models::section_header::SectionHeader;
 
 /// # Audio Macro 
 /// ## 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Audio {
     pub page_id: u64,
     pub page_title: String,

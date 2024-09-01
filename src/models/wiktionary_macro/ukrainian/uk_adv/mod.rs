@@ -4,7 +4,7 @@ use crate::models::language::Language;
 
 /// # Ukrainian Adverb
 /// ## The adverb
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct UkAdv {
     pub page_id: u64,
     pub page_title: String,

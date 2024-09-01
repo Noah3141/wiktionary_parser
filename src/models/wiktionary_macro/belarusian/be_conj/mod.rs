@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 /// # Belarusian IPA
 /// ## Generates Belarusian IPA of word
 ///
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct BeConj {
     pub page_id: u64,
     pub page_title: String,

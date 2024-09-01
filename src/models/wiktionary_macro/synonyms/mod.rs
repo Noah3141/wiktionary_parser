@@ -5,7 +5,7 @@ use crate::models::language::Language;
 /// 
 /// # Synonyms Macro
 /// ## This template shows a line with synonyms. It is intended to be used below each definition, before any usage examples or quotes. 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Synonyms {
     pub page_id: u64,
     pub page_title: String,

@@ -5,7 +5,7 @@ use crate::models::language::Language;
 
 /// # Belarusian Noun Declension Table
 /// ##
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct BeNoun {
     pub page_id: u64,
     pub page_title: String,

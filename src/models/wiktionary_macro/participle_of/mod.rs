@@ -8,7 +8,7 @@ use crate::models::language::Language;
 /// ## Links the provided term to related terms
 /// 
 /// Usually set below a paired "head" template
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ParticipleOf {
     pub page_id: u64,
     pub page_title: String,
