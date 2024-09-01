@@ -13,6 +13,10 @@ pub struct RuAdv {
     pub macro_text: String,
 }
 
+pub mod lemma;
+pub mod entry;
+// pub mod expand;
+
 impl RuAdv {
     pub const TAG: &'static str = "ru-adv";
 }
