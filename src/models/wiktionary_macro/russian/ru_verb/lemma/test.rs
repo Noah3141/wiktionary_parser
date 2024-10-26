@@ -1,9 +1,9 @@
-use crate::models::{language::Language, section_header::SectionHeader, wiktionary_macro::RuNounPlus};
+use crate::models::{language::Language, section_header::SectionHeader, wiktionary_macro::{RuNounPlus, RuVerb}};
 
 
 #[test]
 fn bayat() {
-    let verb = RuNounPlus {
+    let verb = RuVerb {
         page_id: 295351,
         page_title: "баять".to_string(),
         language: Language::Russian,
@@ -19,7 +19,7 @@ fn bayat() {
 
 #[test]
 fn znat() {
-    let verb = RuNounPlus {
+    let verb = RuVerb {
         page_id: 295351,
         page_title: "баять".to_string(),
         language: Language::Russian,
@@ -35,7 +35,7 @@ fn znat() {
 
 #[test]
 fn igrat() {
-    let verb = RuNounPlus {
+    let verb = RuVerb {
         page_id: 295351,
         page_title: "играть".to_string(),
         language: Language::Russian,
@@ -48,3 +48,37 @@ fn igrat() {
         "игра́ть"
     )
 }
+
+#[test]
+fn уступить() {
+    let verb = RuVerb {
+        page_id: 295351,
+        page_title: "уступить".to_string(),
+        language: Language::Russian,
+        section: SectionHeader::Verb,
+        macro_text: "{{ru-verb|уступи́ть|pf|impf=уступа́ть}} ''(object in the [[accusative case]], receiver in the [[dative case]])''".to_string()
+    };
+
+    assert_eq!(
+        verb.lemma(),
+        "уступи́ть"
+    )
+}
+
+#[test]
+fn достичь() {
+    let verb = RuVerb {
+        page_id: 295351,
+        page_title: "достичь".to_string(),
+        language: Language::Russian,
+        section: SectionHeader::Verb,
+        macro_text: "{{ru-verb|дости́чь|pf|impf=достига́ть}} (''+ [[genitive case]]'')".to_string()
+    };
+
+    assert_eq!(
+        verb.lemma(),
+        "дости́чь"
+    )
+}
+
+

@@ -1,3 +1,5 @@
+use crate::utils::select_from;
+
 use super::RuVerb;
 
 #[cfg(test)]
@@ -6,11 +8,18 @@ mod test;
 
 impl RuVerb {
     pub fn lemma(&self) -> String {
-        let without_brackets = self.macro_text
+        let mut macro_text = &self.macro_text[..];
+        if self.macro_text.contains(" ") {
+            macro_text = &select_from(&self.macro_text, "", " ").expect("removal of content after space following bracket");
+        }
+
+        println!("{}", macro_text);
+
+        let without_brackets = macro_text
             .strip_prefix("{{")
-            .expect("Starting brackets")
+            .expect("presence of starting brackets at string start")
             .strip_suffix("}}")
-            .expect("ending brackets");
+            .expect("presence of ending brackets at string end");
 
         let mut parts = without_brackets.split("|")
             .into_iter()
