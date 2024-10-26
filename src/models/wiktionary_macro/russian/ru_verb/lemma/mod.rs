@@ -1,10 +1,10 @@
-use super::RuNounPlus;
+use super::RuVerb;
 
 #[cfg(test)]
 mod test;
 
 
-impl RuNounPlus {
+impl RuVerb {
     pub fn lemma(&self) -> String {
         let without_brackets = self.macro_text
             .strip_prefix("{{")
@@ -22,7 +22,7 @@ impl RuNounPlus {
                     .iter().any(|param| -> bool { segment == param }) // not any is equal to a param flag
             });
 
-        let tag_is_expected = parts.next() == Some("ru-noun+") ;
+        let tag_is_expected = parts.next() == Some("ru-verb") ;
         if !tag_is_expected { println!("\n\nUnexpected tag! {parts:#?}\n\n"); }
 
         let maybe_lemma = parts.next();
@@ -62,6 +62,7 @@ impl RuNounPlus {
             } 
         }
     }
+
     pub fn form_and_lemma(&self) -> Vec<(&str, String)> {
         vec![(&self.page_title, self.lemma())]
     }

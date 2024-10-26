@@ -606,6 +606,6 @@ fn determiner() {
 }}".to_string()
     };
 
-    assert_eq!(table.lemma(), "ско́лько")
+    assert_eq!(table.lemma(), "сколько")
 }
 

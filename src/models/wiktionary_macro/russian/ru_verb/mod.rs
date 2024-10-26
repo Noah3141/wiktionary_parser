@@ -14,6 +14,8 @@ pub struct RuVerb {
     pub macro_text: String,
 }
 
+pub mod lemma;
+
 impl RuVerb {
     pub const TAG: &'static str = "ru-verb";
 }

@@ -13,6 +13,8 @@ pub struct RuAdj {
     pub macro_text: String,
 }
 
+pub mod lemma;
+
 impl RuAdj {
     pub const TAG: &'static str = "ru-adj";
 }
