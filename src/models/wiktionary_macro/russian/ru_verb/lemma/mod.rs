@@ -8,9 +8,7 @@ mod test;
 
 impl RuVerb {
     pub fn lemma(&self) -> String {
-        let mut macro_text = &self.macro_text[..2 + self.macro_text.find("}}").expect("presence somewhere of ending brackets")];
-
-        println!("{}", macro_text);
+        let macro_text = &self.macro_text[..2 + self.macro_text.find("}}").expect("presence somewhere of ending brackets")];
 
         let without_brackets = macro_text
             .strip_prefix("{{")

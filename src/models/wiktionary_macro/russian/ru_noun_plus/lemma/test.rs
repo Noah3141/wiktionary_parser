@@ -65,3 +65,19 @@ fn кот() {
         "кот"
     )
 }
+
+#[test]
+fn upiter() {
+    let noun = RuNounPlus {
+        page_id: 295351,
+        page_title: "юпитер".to_string(),
+        language: Language::Russian,
+        section: SectionHeader::Noun,
+        macro_text: "{{ru-noun+|юпи́тер}} {{qualifier|normal usage}} &lt;br /&gt;".to_string()
+    };
+
+    assert_eq!(
+        noun.lemma(),
+        "юпи́тер"
+    )
+}

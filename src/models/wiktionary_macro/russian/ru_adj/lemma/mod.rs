@@ -6,7 +6,9 @@ mod test;
 
 impl RuAdj {
     pub fn lemma(&self) -> String {
-        let without_brackets = self.macro_text
+        let macro_text = &self.macro_text[..2 + self.macro_text.find("}}").expect("presence somewhere of ending brackets")];
+
+        let without_brackets = macro_text
             .strip_prefix("{{")
             .expect("Starting brackets")
             .strip_suffix("}}")
@@ -57,7 +59,10 @@ impl RuAdj {
                         })
                         .collect::<Vec<&str>>()
                         .join("");
-                    text
+                    
+                    text.chars()
+                        .filter(|c| *c != ']' && *c != '[')
+                        .collect()
                 }
             } 
         }
