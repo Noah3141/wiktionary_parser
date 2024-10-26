@@ -8,10 +8,7 @@ mod test;
 
 impl RuVerb {
     pub fn lemma(&self) -> String {
-        let mut macro_text = &self.macro_text[..];
-        if self.macro_text.contains(" ") {
-            macro_text = &select_from(&self.macro_text, "", " ").expect("removal of content after space following bracket");
-        }
+        let mut macro_text = &self.macro_text[..2 + self.macro_text.find("}}").expect("presence somewhere of ending brackets")];
 
         println!("{}", macro_text);
 
@@ -66,7 +63,10 @@ impl RuVerb {
                         })
                         .collect::<Vec<&str>>()
                         .join("");
-                    text
+
+                    text.chars()
+                        .filter(|c| *c != ']' && *c != '[')
+                        .collect()
                 }
             } 
         }

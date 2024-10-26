@@ -82,3 +82,20 @@ fn достичь() {
 }
 
 
+#[test]
+fn проливать() {
+    let verb = RuVerb {
+        page_id: 295351,
+        page_title: "проливать свет".to_string(),
+        language: Language::Russian,
+        section: SectionHeader::Verb,
+        macro_text: "{{ru-verb|[[пролива́ть]] [[све́т]]|impf|pf=проли́ть све́т}}".to_string()
+    };
+
+    assert_eq!(
+        verb.lemma(),
+        "пролива́ть све́т"
+    )
+}
+
+
